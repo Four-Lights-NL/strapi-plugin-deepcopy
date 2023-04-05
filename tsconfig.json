@@ -11,7 +11,12 @@
     "declarationMap": true,
     "declaration": true
   },
-  "include": ["admin", "custom.d.ts"],
+  "include": [
+    "admin",
+    "custom.d.ts",
+    // Force the JSON files in the src folder to be included
+    "admin/**/*.json"
+  ],
 
   "exclude": [
     "node_modules/",
