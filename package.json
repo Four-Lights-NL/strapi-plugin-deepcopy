@@ -43,6 +43,7 @@
     "strapi-admin.js",
     "strapi-server.js",
     "tsconfig.json",
+    "tsconfig.server.json",
     "custom.d.ts"
   ],
   "author": "Four Lights <engineering@fourlights.nl> (https://github.com/Four-Lights-NL/strapi-plugin-deepcopy)",
@@ -56,7 +57,9 @@
   "scripts": {
     "prepublish": "pnpm run build",
     "develop": "tsc -p tsconfig.server.json -w",
-    "build": "tsc -p tsconfig.server.json"
+    "build": "pnpm run build:admin && pnpm run build:server",
+    "build:admin": "tsc -p tsconfig.json",
+    "build:server": "tsc -p tsconfig.server.json"
   },
   "license": "MIT",
   "main": "strapi-admin.js",
