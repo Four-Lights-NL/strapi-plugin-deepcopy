@@ -1,24 +1,18 @@
 import { prefixPluginTranslations } from '@strapi/helper-plugin'
 
-import pluginPkg from '../../package.json'
 import DeepCopyButton from './components/DeepCopyButton'
 import Initializer from './components/Initializer'
 import PluginIcon from './components/PluginIcon'
-import pluginId from './pluginId'
-
-const { name } = pluginPkg.strapi
+import plugin from './plugin'
 
 export default {
   register(app: any) {
-    const plugin = {
-      id: pluginId,
+    app.registerPlugin({
+      ...plugin,
       initializer: Initializer,
       isReady: false,
       icon: PluginIcon,
-      name,
-    }
-
-    app.registerPlugin(plugin)
+    })
   },
 
   bootstrap(app: any) {
@@ -36,7 +30,7 @@ export default {
         return import(`./translations/${locale}.json`)
           .then(({ default: data }) => {
             return {
-              data: prefixPluginTranslations(data, pluginId),
+              data: prefixPluginTranslations(data, plugin.id),
               locale,
             }
           })
