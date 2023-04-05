@@ -51,6 +51,7 @@
     "npm": ">=6.0.0"
   },
   "scripts": {
+    "prepublish": "pnpm run build",
     "develop": "tsc -p tsconfig.server.json -w",
     "build": "tsc -p tsconfig.server.json"
   },
