@@ -37,6 +37,7 @@
     "styled-components": "^5.3.6"
   },
   "files": [
+    "dist",
     "admin",
     "server",
     "strapi-admin.js",
