@@ -1,5 +1,2 @@
-import pluginPkg from '../../package.json'
-
-const pluginId = pluginPkg.name.replace(/^(@[^-,.][\w,-]+\/|strapi-)plugin-/i, '')
-
+const pluginId = "@fourlights/strapi-plugin-deep-copy"
 export default pluginId
