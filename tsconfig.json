@@ -1,15 +1,25 @@
 {
-  "extends": "@strapi/typescript-utils/tsconfigs/admin",
-
   "compilerOptions": {
-    "target": "ESNext",
-    "strict": true,
-    "outDir": "dist",
-    "module": "CommonJS",
     "rootDir": ".",
-    "noEmit": false,
+    "outDir": "dist",
+    "target": "ESNext",
+    "module": "commonjs",
+    "jsx": "react",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "declaration": true,
     "declarationMap": true,
-    "declaration": true
+    "downlevelIteration": true,
+    "incremental": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
   },
   "include": [
     "admin",
