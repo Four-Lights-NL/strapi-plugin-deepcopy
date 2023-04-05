@@ -41,7 +41,8 @@
     "admin",
     "server",
     "strapi-admin.js",
-    "strapi-server.js"
+    "strapi-server.js",
+    "tsconfig.json"
   ],
   "author": "Four Lights <engineering@fourlights.nl> (https://github.com/Four-Lights-NL/strapi-plugin-deepcopy)",
   "maintainers": [
