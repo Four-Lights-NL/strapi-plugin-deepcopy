@@ -9,5 +9,13 @@ export default {
         policies: [],
       },
     },
+    {
+      method: 'GET',
+      path: '/contentTypes',
+      handler: 'core.getContentTypes',
+      config: {
+        policies: [],
+      },
+    },
   ]
 }

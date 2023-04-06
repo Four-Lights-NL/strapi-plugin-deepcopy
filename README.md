@@ -5,11 +5,46 @@ This means that any relations are lost and have to be duplicated seperately and 
 
 This plugin provides a custom `clone` action when viewing an entity in the Strapi admin which clones the entity and all it's related models, and connects the newly created entities in the same way as the original.
 
-The plugin is currently in an alpha state: it's working, but the configuration is lacking.
+The plugin is currently in a beta state: it's working, but the configuration is lacking.
 
-For example, the clone action is currently only visible on a contentType called `page`.
+## Usage
 
-I hope to improve this in future PR's.
+Install using your favourite package manager
+
+```bash
+pnpm install @fourlights/strapi-plugin-deep-copy
+```
+
+Then in `config/plugins.js` add the contentTypes where you want to show the button to create a new copy.
+
+```js
+  // your other plugins stuff
+  'deep-copy': {
+    enabled: true,
+    config: {
+      contentTypes: {
+        'api::page.page': true,
+      },
+    },
+  },
+  // more of your plugin stuff
+```
+
+## Advanced usage
+
+The default behaviour is to create a copy for all related/nested entities.
+However, for some entities, this doesn't make sense, e.g. the `admin::user` from Strapi.
+The below is the default behaviour.
+
+```js
+  config: {
+    excludeFromCopy: [
+        'admin::user', // do not create a copy of these contentTypes (they will be set as relation still)
+    ]
+  },
+  // more of your plugin stuff
+```
+
 
 ## Development
 

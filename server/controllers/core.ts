@@ -8,4 +8,12 @@ export default ({ strapi }: { strapi: Strapi }) => ({
       .service('core')
       .copy({ publish: true, ...body });
   },
+  async getContentTypes(ctx) {
+    try {
+      const plugin = await strapi.plugin('deep-copy');
+      ctx.body = { contentTypes: plugin.config('contentTypes') }
+    } catch (err) {
+      ctx.throw(500, err);
+    }
+  },
 });

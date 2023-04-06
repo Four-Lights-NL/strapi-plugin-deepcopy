@@ -13,12 +13,8 @@ export default ({ strapi }: { strapi: Strapi }) => ({
     sourcePage.title = title
     sourcePage.slug = slug
 
-    // TODO: Get config from plugin
-    const config: DeepCopyConfig = {
-      excludeFromCopy: ['admin::user'],
-      contentTypes: {},
-    }
-    const mutations = await prepareForCopy(contentType, sourcePage, internalId, config)
+    const excludeFromCopy = await strapi.plugin('deep-copy').config('excludeFromCopy')
+    const mutations = await prepareForCopy(contentType, sourcePage, internalId, excludeFromCopy)
 
     const idMap: Record<string, string> = {}  // Keeps track of newly created id's
     const results = []
@@ -29,7 +25,7 @@ export default ({ strapi }: { strapi: Strapi }) => ({
 
         // Replace forward declared id with resolved id
         Object.entries(model.attributes ?? {})
-          .filter(([, attr]: [string, any]) => attr.type === 'relation' && !config.excludeFromCopy.includes(attr.target))
+          .filter(([, attr]: [string, any]) => attr.type === 'relation' && !excludeFromCopy.includes(attr.target))
           .map(([name]) => {
             if (data[name] && data[name].connect)
               data[name].connect = data[name].connect.map((c: string) => idMap[c])

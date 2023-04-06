@@ -14,7 +14,7 @@ import {
 } from '@strapi/design-system'
 import { request, useCMEditViewDataManager } from '@strapi/helper-plugin'
 import { Lightbulb } from '@strapi/icons'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { useIntl } from 'react-intl'
 import { useHistory } from 'react-router-dom'
 import slugify from 'slugify'
@@ -22,8 +22,9 @@ import slugify from 'slugify'
 import PluginIcon from '../PluginIcon'
 
 const DeepCopyButton = () => {
-  const { slug, layout, initialData, isSingleType } = useCMEditViewDataManager()
+  const { layout, initialData, isSingleType } = useCMEditViewDataManager()
 
+  const [contentTypes, setContentTypes] = useState<Record<string, boolean>>({})
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const [isVisible, setIsVisible] = useState(false)
@@ -55,8 +56,14 @@ const DeepCopyButton = () => {
     }
   }
 
-  // NOTE: For now we only support page
-  if (slug !== 'api::page.page') return null
+  useEffect(() => {
+    request('/deep-copy/contentTypes').then((res: any) => setContentTypes(res.contentTypes))
+  }, [setContentTypes])
+
+  // Only show button on allowed contentTypes
+  if (!contentTypes) return null;
+  if (!contentTypes[layout.uid]) return null;
+
   if (isSingleType) return null // We cannot copy a single type entity
   if (!initialData.id) return null // We cannot copy a non-existing entity
 
@@ -70,15 +77,15 @@ const DeepCopyButton = () => {
       >
         {formatMessage({
           id: 'deep-copy.components.duplicate.button',
-          defaultMessage: 'Clone this page',
+          defaultMessage: 'Create a copy',
         })}
       </Button>
-      <Dialog onClose={() => setIsVisible(false)} title="Clone this page" isOpen={isVisible}>
+      <Dialog onClose={() => setIsVisible(false)} title="Create a copy" isOpen={isVisible}>
         <DialogBody icon={<PluginIcon />}>
           <Flex direction="column" alignItems="center" justifyContent="center" gap={5}>
             <Flex justifyContent="center">
               <Typography id="confirm-description">
-                Fully clone this page, including all related containers, sections, etc.
+                Create a full copy, including all related and nested objects.
               </Typography>
             </Flex>
             {error && (

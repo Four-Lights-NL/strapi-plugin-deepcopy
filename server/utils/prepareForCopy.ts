@@ -1,6 +1,4 @@
-import DeepCopyConfig from "../config/config.interface";
-
-const prepareForCopy = async (contentType: string, data: any, namePrefix: string, config: DeepCopyConfig) => {
+const prepareForCopy = async (contentType: string, data: any, namePrefix: string, excludeFromCopy: string[]) => {
   if (!data) return []
 
   const emptyFields = { id: undefined, createdAt: undefined, updatedAt: undefined, publishedAt: undefined }
@@ -11,10 +9,10 @@ const prepareForCopy = async (contentType: string, data: any, namePrefix: string
 
   // Handle explicitly excluded relations
   Object.entries(model.attributes ?? {})
-      .filter(([name, attr]: [string, any]) => config.excludeFromCopy.includes(attr.target) && data[name])
+      .filter(([name, attr]: [string, any]) => excludeFromCopy.includes(attr.target) && data[name])
       .map(([name]) => data[name] = data[name].id)
   model.attributes = Object.fromEntries(
-      Object.entries(model.attributes ?? {}).filter(([, attr]: [string, any]) => !config.excludeFromCopy.includes(attr.target))
+      Object.entries(model.attributes ?? {}).filter(([, attr]: [string, any]) => !excludeFromCopy.includes(attr.target))
   )
 
   // Handle media links
@@ -32,7 +30,7 @@ const prepareForCopy = async (contentType: string, data: any, namePrefix: string
       .filter(([, attr]: [string, any]) => attr.type === 'component') // filter on component
       .map(async ([name, attr]: [string, any]) => {
         if (attr.repeatable === true && data[name].length === 0) return
-        const ret = await prepareForCopy(attr.component, data[name], `${namePrefix}.${name}`, config)
+        const ret = await prepareForCopy(attr.component, data[name], `${namePrefix}.${name}`, excludeFromCopy)
         data[name] = (ret[ret.length - 1] as any).data // Set last as inline
         return ret.slice(0, ret.length - 1) // Return all but last
       }))).flat(1)
@@ -45,7 +43,7 @@ const prepareForCopy = async (contentType: string, data: any, namePrefix: string
         if (data[name] === null || data[name] === undefined) return
 
         const newName = `${namePrefix}.${name}`
-        const ret = await prepareForCopy(attr.target, data[name], newName, config)
+        const ret = await prepareForCopy(attr.target, data[name], newName, excludeFromCopy)
 
         if (data[name].connect === undefined) data[name] = { 'connect': [] }
         data[name].connect.push(newName)
@@ -58,7 +56,6 @@ const prepareForCopy = async (contentType: string, data: any, namePrefix: string
   const oneToMany = (await Promise.all(Object.entries(model.attributes ?? {})
       .filter(([, attr]: [string, any]) => attr.type === 'relation' && attr.relation === 'oneToMany')
       .map(async ([name, attr]: [string, any]) => {
-        // console.log(contentType, 'oneToMany', ' => name', name, ' / ', data[name])
         if (data[name] === null || data[name] === undefined) return
 
         const newName = `${namePrefix}.${name}`
@@ -67,9 +64,7 @@ const prepareForCopy = async (contentType: string, data: any, namePrefix: string
         const ret = await Promise.all(
             data[name].flatMap(
                 async (row: any, index: number) =>
-                    await prepareForCopy(attr.target, row, `${newName}.${index + 1}`, config)))
-
-        console.log(ret)
+                    await prepareForCopy(attr.target, row, `${newName}.${index + 1}`, excludeFromCopy)))
 
         if (data[name].connect === undefined) data[name] = { 'connect': [] }
         data[name].connect.push(...newNames)
