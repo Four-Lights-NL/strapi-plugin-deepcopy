@@ -1,4 +1,6 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "dist",
@@ -21,6 +23,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
   },
+
   "include": [
     "admin",
     "custom.d.ts",
