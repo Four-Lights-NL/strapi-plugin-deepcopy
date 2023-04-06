@@ -46,10 +46,11 @@
   },
   "scripts": {
     "prepublish": "pnpm run build",
-    "develop": "tsc -p tsconfig.server.json -w",
     "build": "pnpm run build:admin && pnpm run build:server",
     "build:admin": "tsc -p tsconfig.json",
-    "build:server": "tsc -p tsconfig.server.json"
+    "build:server": "tsc -p tsconfig.server.json",
+    "develop:admin": "tsc -p tsconfig.json -w",
+    "develop:server": "tsc -p tsconfig.server.json -w"
   },
   "license": "MIT",
   "main": "strapi-admin.js",

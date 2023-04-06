@@ -1,11 +1,21 @@
-const prepareForCopy = async (contentType: string, data: any, namePrefix: string) => {
+import DeepCopyConfig from "../config/config.interface";
+
+const prepareForCopy = async (contentType: string, data: any, namePrefix: string, config: DeepCopyConfig) => {
   if (!data) return []
 
   const emptyFields = { id: undefined, createdAt: undefined, updatedAt: undefined, publishedAt: undefined }
   let prepared: Array<{ contentType: string, data: any, model: any, name: string }> = []
 
   // Get model for this contentType
-  const model = await strapi.getModel(contentType)
+  const model = { ...await strapi.getModel(contentType) } // Explicit copy, make sure we get the correct model on every iteration
+
+  // Handle explicitly excluded relations
+  Object.entries(model.attributes ?? {})
+      .filter(([name, attr]: [string, any]) => config.excludeFromCopy.includes(attr.target) && data[name])
+      .map(([name]) => data[name] = data[name].id)
+  model.attributes = Object.fromEntries(
+      Object.entries(model.attributes ?? {}).filter(([, attr]: [string, any]) => !config.excludeFromCopy.includes(attr.target))
+  )
 
   // Handle media links
   Object.entries(model.attributes ?? {})
@@ -19,10 +29,10 @@ const prepareForCopy = async (contentType: string, data: any, namePrefix: string
 
   // Handle components
   const components = (await Promise.all(Object.entries(model.attributes ?? {})
-      .filter(([name, attr]: [string, any]) => attr.type === 'component') // filter on component
+      .filter(([, attr]: [string, any]) => attr.type === 'component') // filter on component
       .map(async ([name, attr]: [string, any]) => {
         if (attr.repeatable === true && data[name].length === 0) return
-        const ret = await prepareForCopy(attr.component, data[name], `${namePrefix}.${name}`)
+        const ret = await prepareForCopy(attr.component, data[name], `${namePrefix}.${name}`, config)
         data[name] = (ret[ret.length - 1] as any).data // Set last as inline
         return ret.slice(0, ret.length - 1) // Return all but last
       }))).flat(1)
@@ -30,12 +40,12 @@ const prepareForCopy = async (contentType: string, data: any, namePrefix: string
 
   // Handle oneToOne relations
   const oneToOne= (await Promise.all(Object.entries(model.attributes ?? {})
-      .filter(([name, attr]: [string, any]) => attr.type === 'relation' && attr.relation === 'oneToOne')
+      .filter(([, attr]: [string, any]) => attr.type === 'relation' && attr.relation === 'oneToOne')
       .map(async ([name, attr]: [string, any]) => {
         if (data[name] === null || data[name] === undefined) return
 
         const newName = `${namePrefix}.${name}`
-        const ret = await prepareForCopy(attr.target, data[name], newName)
+        const ret = await prepareForCopy(attr.target, data[name], newName, config)
 
         if (data[name].connect === undefined) data[name] = { 'connect': [] }
         data[name].connect.push(newName)
@@ -46,14 +56,20 @@ const prepareForCopy = async (contentType: string, data: any, namePrefix: string
 
   // Handle oneToMany relations
   const oneToMany = (await Promise.all(Object.entries(model.attributes ?? {})
-      .filter(([name, attr]: [string, any]) => attr.type === 'relation' && attr.relation === 'oneToMany')
+      .filter(([, attr]: [string, any]) => attr.type === 'relation' && attr.relation === 'oneToMany')
       .map(async ([name, attr]: [string, any]) => {
+        // console.log(contentType, 'oneToMany', ' => name', name, ' / ', data[name])
         if (data[name] === null || data[name] === undefined) return
 
         const newName = `${namePrefix}.${name}`
         const newNames = data[name].map((row, index) => `${newName}.${index + 1}`)
 
-        const ret = await Promise.all(data[name].flatMap(async (row, index) => await prepareForCopy(attr.target, row, `${newName}.${index + 1}`)))
+        const ret = await Promise.all(
+            data[name].flatMap(
+                async (row: any, index: number) =>
+                    await prepareForCopy(attr.target, row, `${newName}.${index + 1}`, config)))
+
+        console.log(ret)
 
         if (data[name].connect === undefined) data[name] = { 'connect': [] }
         data[name].connect.push(...newNames)

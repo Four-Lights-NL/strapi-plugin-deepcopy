@@ -10,3 +10,30 @@ The plugin is currently in an alpha state: it's working, but the configuration i
 For example, the clone action is currently only visible on a contentType called `page`.
 
 I hope to improve this in future PR's.
+
+## Development
+
+You can use the `playground` directory for a strapi instance which is configured to use the plugin.
+
+Automatic compilation of server part
+```bash
+pnpm run develop:server
+```
+
+Automatic compilation of admin part
+```bash
+pnpm run develop:server
+```
+
+Start strapi server
+```bash
+cd playground
+pnpm run develop:admin
+```
+
+Login to the admin with
+
+```
+playground@example.com
+Test1234
+```
