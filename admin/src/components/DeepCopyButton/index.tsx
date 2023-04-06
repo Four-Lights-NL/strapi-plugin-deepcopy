@@ -57,7 +57,8 @@ const DeepCopyButton = () => {
 
   // NOTE: For now we only support page
   if (slug !== 'api::page.page') return null
-  if (isSingleType) return null
+  if (isSingleType) return null // We cannot copy a single type entity
+  if (!initialData.id) return null // We cannot copy a non-existing entity
 
   return (
     <>
