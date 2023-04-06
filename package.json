@@ -13,7 +13,6 @@
     "@strapi/helper-plugin": "^4.9.0",
     "@strapi/icons": "^1.6.6",
     "@strapi/strapi": "^4.9.0",
-    "prop-types": "^15.8.1",
     "slugify": "^1.6.6",
     "strapi-plugin-populate-deep": "^2.0.0"
   },
