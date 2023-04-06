@@ -1,20 +1,26 @@
 import { Strapi } from '@strapi/strapi';
 
 import slugify from "slugify";
-import prepareForCopy from "../utils/prepareForCopy";
+import { prepareForCopy, populateObject } from "../utils"
+import DeepCopyConfig from "../config/config.interface";
 
 export default ({ strapi }: { strapi: Strapi }) => ({
   async copy({ contentType, id, title, internalId, publish }) {
     const slug = slugify(title).toLowerCase()
 
-    // NOTE: We use `deep` which depends on `strapi-plugin-populate-deep`
-    const sourcePage = await strapi.entityService.findOne(contentType, id, { populate: "deep" })
+    const populate = populateObject(contentType)
+    const sourcePage = await strapi.entityService.findOne(contentType, id, { populate })
     sourcePage.title = title
     sourcePage.slug = slug
 
-    const mutations = await prepareForCopy(contentType, sourcePage, internalId)
+    // TODO: Get config from plugin
+    const config: DeepCopyConfig = {
+      excludeFromCopy: ['admin::user'],
+      contentTypes: {},
+    }
+    const mutations = await prepareForCopy(contentType, sourcePage, internalId, config)
 
-    const idMap = {}  // Keeps track of newly created id's
+    const idMap: Record<string, string> = {}  // Keeps track of newly created id's
     const results = []
 
     try {
@@ -23,10 +29,10 @@ export default ({ strapi }: { strapi: Strapi }) => ({
 
         // Replace forward declared id with resolved id
         Object.entries(model.attributes ?? {})
-          .filter(([name, attr]: [string, any]) => attr.type === 'relation')
+          .filter(([, attr]: [string, any]) => attr.type === 'relation' && !config.excludeFromCopy.includes(attr.target))
           .map(([name]) => {
             if (data[name] && data[name].connect)
-              data[name].connect = data[name].connect.map((c) => idMap[c])
+              data[name].connect = data[name].connect.map((c: string) => idMap[c])
           })
 
         if (publish) data.publishedAt = Date.now()
