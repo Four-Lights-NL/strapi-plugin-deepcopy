@@ -1,11 +1,14 @@
 {
   "git": {
     "commitMessage": "chore: release v${version}",
+    "tagName": "v${version}",
     "requireBranch": "main"
   },
-  "hooks": {
-    "before:init": ["git pull", "pnpm run lint"],
-    "after:bump": "pnpx auto-changelog -p"
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md"
+    }
   },
   "github": {
     "release": true
