@@ -14,7 +14,7 @@ import {
 } from '@strapi/design-system'
 import { request, useCMEditViewDataManager } from '@strapi/helper-plugin'
 import { Lightbulb } from '@strapi/icons'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { useIntl } from 'react-intl'
 import { useHistory } from 'react-router-dom'
 import slugify from 'slugify'
@@ -61,8 +61,8 @@ const DeepCopyButton = () => {
   }, [setContentTypes])
 
   // Only show button on allowed contentTypes
-  if (!contentTypes) return null;
-  if (!contentTypes[layout.uid]) return null;
+  if (!contentTypes) return null
+  if (!contentTypes[layout.uid]) return null
 
   if (isSingleType) return null // We cannot copy a single type entity
   if (!initialData.id) return null // We cannot copy a non-existing entity
