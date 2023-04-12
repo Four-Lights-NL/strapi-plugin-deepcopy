@@ -12,7 +12,7 @@ on:
           - minor
           - major
 
-permissions: read-all|write-all
+permissions: write-all
 
 jobs:
   validate:
