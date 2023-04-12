@@ -12,8 +12,6 @@ on:
           - minor
           - major
 
-permissions: write-all
-
 jobs:
   validate:
     name: Validate
@@ -54,6 +52,6 @@ jobs:
       - name: Run release
         run: pnpm release --ci
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
