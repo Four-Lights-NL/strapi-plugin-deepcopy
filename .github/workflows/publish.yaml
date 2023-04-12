@@ -5,35 +5,17 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
         with:
           node-version: 18
           registry-url: 'https://registry.npmjs.org'
 
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        id: pnpm-install
-        with:
-          version: 8
-          run_install: false
-
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
       - name: Install dependencies
-        run: pnpm install
+        run: npm ci
 
       - name: Initialize Git user
         run: |
@@ -41,12 +23,12 @@ jobs:
           git config --global user.name "Thomas Rijpstra"
 
       - name: Initialize NPM config
-        run: pnpm config set //registry.npmjs.org:_authToken $NPM_TOKEN
+        run: npm config set //registry.npmjs.org:_authToken $NPM_TOKEN
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Run release
-        run: pnpm release --ci --npm.pnpm
+        run: npm release --ci
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

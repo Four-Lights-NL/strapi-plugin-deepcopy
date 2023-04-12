@@ -4,8 +4,8 @@
     "requireBranch": "main"
   },
   "hooks": {
-    "before:init": ["git pull", "pnpm run lint"],
-    "after:bump": "pnpx auto-changelog -p"
+    "before:init": ["git pull", "npm run lint"],
+    "after:bump": "npx auto-changelog -p"
   },
   "github": {
     "release": true
