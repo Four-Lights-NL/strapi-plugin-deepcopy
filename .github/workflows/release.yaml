@@ -12,6 +12,8 @@ on:
           - minor
           - major
 
+permissions: read-all|write-all
+
 jobs:
   validate:
     name: Validate
