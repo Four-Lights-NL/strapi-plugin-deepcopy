@@ -3,6 +3,7 @@ on: workflow_dispatch
 
 jobs:
   publish:
+    name: Release & Publish
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
