@@ -15,7 +15,7 @@ on:
 jobs:
   validate:
     name: Validate
-    uses: ./.github/workflows/validate.yml
+    uses: ./.github/workflows/validate.yaml
 
   publish:
     name: Publish
