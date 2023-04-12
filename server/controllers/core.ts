@@ -1,19 +1,19 @@
-import { Strapi } from '@strapi/strapi';
+import { Strapi } from '@strapi/strapi'
 
 export default ({ strapi }: { strapi: Strapi }) => ({
-  async deepCopy(ctx) {
-    const body = ctx.request.body
+  async deepCopy(ctx: any) {
+    const { body } = ctx.request
     ctx.body = await strapi
       .plugin('deep-copy')
       .service('core')
-      .copy({ publish: true, ...body });
+      .copy({ publish: true, ...body })
   },
-  async getContentTypes(ctx) {
+  async getContentTypes(ctx: any) {
     try {
-      const plugin = await strapi.plugin('deep-copy');
+      const plugin = await strapi.plugin('deep-copy')
       ctx.body = { contentTypes: plugin.config('contentTypes') }
     } catch (err) {
-      ctx.throw(500, err);
+      ctx.throw(500, err)
     }
   },
-});
+})

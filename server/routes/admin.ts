@@ -2,9 +2,9 @@ export default {
   type: 'admin',
   routes: [
     {
-      method: "POST",
-      path: "/:contentType/:id",
-      handler: "core.deepCopy",
+      method: 'POST',
+      path: '/:contentType/:id',
+      handler: 'core.deepCopy',
       config: {
         policies: [],
       },
@@ -17,5 +17,5 @@ export default {
         policies: [],
       },
     },
-  ]
+  ],
 }

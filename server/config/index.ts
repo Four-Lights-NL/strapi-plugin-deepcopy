@@ -1,9 +1,9 @@
-import DeepCopyConfig from "./config.interface";
+import DeepCopyConfig from './config.interface'
 
 export default {
   default: {
     excludeFromCopy: ['admin::user'],
-    contentTypes: {}
+    contentTypes: {},
   } as DeepCopyConfig,
   validator() {},
-};
+}
