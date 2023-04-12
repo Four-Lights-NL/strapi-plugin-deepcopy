@@ -6,6 +6,9 @@ const prepareForCopy = async (
 ) => {
   if (!data) return []
 
+  // Create a copy of data that we can modify
+  const newData = { ...data }
+
   const emptyFields = {
     id: undefined,
     createdAt: undefined,
@@ -19,8 +22,9 @@ const prepareForCopy = async (
 
   // Handle explicitly excluded relations
   Object.entries(model.attributes ?? {})
-    .filter(([name, attr]: [string, any]) => excludeFromCopy.includes(attr.target) && data[name])
-    .map(([name]) => (data[name] = data[name].id))
+    .filter(([name, attr]: [string, any]) => excludeFromCopy.includes(attr.target) && newData[name])
+    // eslint-disable-next-line no-return-assign
+    .map(([name]) => (newData[name] = newData[name].id))
   model.attributes = Object.fromEntries(
     Object.entries(model.attributes ?? {}).filter(
       ([, attr]: [string, any]) => !excludeFromCopy.includes(attr.target),
@@ -29,13 +33,18 @@ const prepareForCopy = async (
 
   // Handle media links
   Object.entries(model.attributes ?? {})
-    .filter(([name, attr]: [string, any]) => attr.type === 'media' && data[name])
-    .map(([name]) => (data[name] = data[name].id))
+    .filter(([name, attr]: [string, any]) => attr.type === 'media' && newData[name])
+    // eslint-disable-next-line no-return-assign
+    .map(([name]) => (newData[name] = newData[name].id))
 
   // Handle dynamic zones
   Object.entries(model.attributes ?? {})
-    .filter(([name, attr]: [string, any]) => attr.type === 'dynamiczone' && data[name])
-    .map(([name]) => (data[name] = data[name].map((block) => ({ ...block, ...emptyFields }))))
+    .filter(([name, attr]: [string, any]) => attr.type === 'dynamiczone' && newData[name])
+    .map(
+      // eslint-disable-next-line no-return-assign
+      ([name]) =>
+        (newData[name] = newData[name].map((block: any) => ({ ...block, ...emptyFields }))),
+    )
 
   // Handle components
   const components = (
@@ -43,14 +52,14 @@ const prepareForCopy = async (
       Object.entries(model.attributes ?? {})
         .filter(([, attr]: [string, any]) => attr.type === 'component') // filter on component
         .map(async ([name, attr]: [string, any]) => {
-          if (attr.repeatable === true && data[name].length === 0) return
+          if (attr.repeatable === true && newData[name].length === 0) return undefined
           const ret = await prepareForCopy(
             attr.component,
-            data[name],
+            newData[name],
             `${namePrefix}.${name}`,
             excludeFromCopy,
           )
-          data[name] = (ret[ret.length - 1] as any).data // Set last as inline
+          newData[name] = (ret[ret.length - 1] as any).data // Set last as inline
           return ret.slice(0, ret.length - 1) // Return all but last
         }),
     )
@@ -65,13 +74,13 @@ const prepareForCopy = async (
           ([, attr]: [string, any]) => attr.type === 'relation' && attr.relation === 'oneToOne',
         )
         .map(async ([name, attr]: [string, any]) => {
-          if (data[name] === null || data[name] === undefined) return
+          if (newData[name] === null || newData[name] === undefined) return undefined
 
           const newName = `${namePrefix}.${name}`
-          const ret = await prepareForCopy(attr.target, data[name], newName, excludeFromCopy)
+          const ret = await prepareForCopy(attr.target, newData[name], newName, excludeFromCopy)
 
-          if (data[name].connect === undefined) data[name] = { connect: [] }
-          data[name].connect.push(newName)
+          if (newData[name].connect === undefined) newData[name] = { connect: [] }
+          newData[name].connect.push(newName)
 
           return ret // Return all
         }),
@@ -87,19 +96,19 @@ const prepareForCopy = async (
           ([, attr]: [string, any]) => attr.type === 'relation' && attr.relation === 'oneToMany',
         )
         .map(async ([name, attr]: [string, any]) => {
-          if (data[name] === null || data[name] === undefined) return
+          if (newData[name] === null || newData[name] === undefined) return undefined
 
           const newName = `${namePrefix}.${name}`
-          const newNames = data[name].map((row, index) => `${newName}.${index + 1}`)
+          const newNames = newData[name].map((row, index) => `${newName}.${index + 1}`)
 
           const ret = await Promise.all(
-            data[name].flatMap(async (row: any, index: number) =>
+            newData[name].flatMap(async (row: any, index: number) =>
               prepareForCopy(attr.target, row, `${newName}.${index + 1}`, excludeFromCopy),
             ),
           )
 
-          if (data[name].connect === undefined) data[name] = { connect: [] }
-          data[name].connect.push(...newNames)
+          if (newData[name].connect === undefined) newData[name] = { connect: [] }
+          newData[name].connect.push(...newNames)
 
           return ret // Return all
         }),
@@ -109,9 +118,9 @@ const prepareForCopy = async (
 
   // Add top-most level as last
   if ('name' in model.attributes) {
-    data.name = namePrefix
+    newData.name = namePrefix
   }
-  prepared.push({ contentType, model, data: { ...data, ...emptyFields }, name: namePrefix })
+  prepared.push({ contentType, model, data: { ...newData, ...emptyFields }, name: namePrefix })
   return prepared.filter((p) => p)
 }
 export default prepareForCopy

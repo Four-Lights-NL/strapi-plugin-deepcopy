@@ -13,12 +13,12 @@
     "@strapi/helper-plugin": "^4.9.0",
     "@strapi/icons": "^1.6.6",
     "@strapi/strapi": "^4.9.0",
-    "slugify": "^1.6.6",
-    "strapi-plugin-populate-deep": "^2.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-intl": "^6.3.2",
-    "react-router-dom": "^5.3.4"
+    "react-router-dom": "^5.3.4",
+    "slugify": "^1.6.6",
+    "strapi-plugin-populate-deep": "^2.0.0"
   },
   "devDependencies": {
     "@types/react": "^17.0.56",
@@ -42,10 +42,7 @@
     "admin",
     "server",
     "strapi-admin.js",
-    "strapi-server.js",
-    "tsconfig.json",
-    "tsconfig.server.json",
-    "custom.d.ts"
+    "strapi-server.js"
   ],
   "author": "Four Lights <engineering@fourlights.nl> (https://github.com/Four-Lights-NL/strapi-plugin-deepcopy)",
   "maintainers": [
@@ -57,11 +54,14 @@
   },
   "scripts": {
     "prepublish": "pnpm run build",
+    "lint": "pnpm run lint:admin && pnpm run lint:server",
+    "lint:admin": "eslint admin",
+    "lint:server": "eslint server",
     "build": "pnpm run build:admin && pnpm run build:server",
-    "build:admin": "tsc -p tsconfig.json",
-    "build:server": "tsc -p tsconfig.server.json",
-    "develop:admin": "tsc -p tsconfig.json -w",
-    "develop:server": "tsc -p tsconfig.server.json -w"
+    "build:admin": "tsc -p admin/tsconfig.json",
+    "build:server": "tsc -p server/tsconfig.json",
+    "develop:admin": "tsc -p admin/tsconfig.json -w",
+    "develop:server": "tsc -p server/tsconfig.json -w"
   },
   "license": "MIT",
   "main": "strapi-admin.js",

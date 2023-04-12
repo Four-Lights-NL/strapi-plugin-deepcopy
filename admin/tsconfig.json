@@ -3,7 +3,7 @@
 
   "compilerOptions": {
     "rootDir": ".",
-    "outDir": "dist",
+    "outDir": "../dist/admin",
     "target": "ESNext",
     "module": "commonjs",
     "jsx": "react",
@@ -25,18 +25,14 @@
   },
 
   "include": [
-    "admin",
-    "custom.d.ts",
+    "**/*",
     // Force the JSON files in the src folder to be included
-    "admin/**/*.json"
+    "**/*.json"
   ],
 
   "exclude": [
-    "node_modules/",
-    "dist/",
-
-    // Do not include server files in the server compilation
-    "server/",
+    "../node_modules/",
+    "../dist/",
     // Do not include test files
     "**/*.test.ts"
   ]

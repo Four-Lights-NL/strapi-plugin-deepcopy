@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/tsconfig",
 
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "../dist/server",
     "rootDir": ".",
 
     "module": "CommonJS",
@@ -21,19 +21,15 @@
   },
 
   "include": [
-    "custom.d.ts",
-    // Include the root directory
-    "server",
+    "**/*",
     // Force the JSON files in the src folder to be included
-    "server/**/*.json"
+    "**/*.json"
   ],
 
   "exclude": [
-    "node_modules/",
-    "dist/",
+    "../node_modules/",
+    "../dist/",
 
-    // Do not include admin files in the server compilation
-    "admin/",
     // Do not include test files
     "**/*.test.ts"
   ]

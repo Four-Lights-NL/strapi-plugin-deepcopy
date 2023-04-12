@@ -11,7 +11,7 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
   parserOptions: {
-    project: ['./tsconfig.json', './tsconfig.server.json'],
+    project: ['./admin/tsconfig.json', './server/tsconfig.json'],
   },
   parser: '@typescript-eslint/parser',
   plugins: ['prettier', 'simple-import-sort'],
