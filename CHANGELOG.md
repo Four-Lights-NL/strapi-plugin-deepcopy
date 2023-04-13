@@ -1,5 +1,12 @@
 
 
+### [0.4.3](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.2...v0.4.3) (2023-04-13)
+
+
+### Bug Fixes
+
+* remove unneeded assets from github release ([a1373f8](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/a1373f8bfed23c1ffef7c4207fa41b682968aeac))
+
 ### [0.4.2](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.1...v0.4.2) (2023-04-13)
 
 
