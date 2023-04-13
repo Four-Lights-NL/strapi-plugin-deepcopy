@@ -23,10 +23,12 @@
     }
   },
   "hooks": {
-    "after:bump": "npm run build"
+    "after:bump": "npm run build",
+    "before:release": "npm pack"
   },
   "github": {
-    "release": true
+    "release": true,
+    "assets": "*.tgz"
   },
   "npm": {
     "publish": true
