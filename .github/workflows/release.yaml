@@ -5,7 +5,7 @@ on:
       bump_type:
         description: 'Bump type'
         required: true
-        default: 'minor'
+        default: 'patch'
         type: choice
         options:
           - patch
@@ -32,8 +32,8 @@ jobs:
 
       - name: Config Git
         run: |
-          git config --global user.email github-actions@github.com
-          git config --global user.name GitHub Actions
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -51,9 +51,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm build
 
       - name: Run release
         run: pnpm release --ci

@@ -16,20 +16,19 @@
           {
             "type": "fix",
             "section": "Bug Fixes"
-          },
-          {
-            "type": "chore",
-            "section": "Misc"
           }
         ]
       },
       "infile": "CHANGELOG.md"
     }
   },
+  "hooks": {
+    "after:bump": "npm run build"
+  },
   "github": {
     "release": true
   },
   "npm": {
-    "release": true
+    "publish": true
   }
 }
