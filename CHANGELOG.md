@@ -1,5 +1,13 @@
 
 
+### [0.4.1](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.0...v0.4.1) (2023-04-13)
+
+
+### Bug Fixes
+
+* add dist folder to github release ([e115420](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/e115420ed1e8beaf88d16198360f0f307e63857d))
+* honor `bump_type` when releasing ([d2c37ef](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/d2c37ef6c23bb6586d6d3019e695e3bda7fa83ad))
+
 ## 0.4.0 (2023-04-13)
 
 
