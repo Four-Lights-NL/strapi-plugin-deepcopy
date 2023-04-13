@@ -1,5 +1,12 @@
 
 
+### [0.4.4](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.3...v0.4.4) (2023-04-13)
+
+
+### Bug Fixes
+
+* use static imports to resolve critical dependency warnings ([8a16618](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/8a16618b8b63d52ed7132353f97f3034cad3a982))
+
 ### [0.4.3](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.2...v0.4.3) (2023-04-13)
 
 
