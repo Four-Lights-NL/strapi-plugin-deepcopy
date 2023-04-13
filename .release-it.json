@@ -10,9 +10,6 @@
       "infile": "CHANGELOG.md"
     }
   },
-  "hooks": {
-    "after:bump": "pnpm run build"
-  },
   "github": {
     "release": true
   },
