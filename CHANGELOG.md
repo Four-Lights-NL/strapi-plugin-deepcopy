@@ -1,5 +1,12 @@
 
 
+### [0.4.2](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.1...v0.4.2) (2023-04-13)
+
+
+### Bug Fixes
+
+* use glob pattern for github assets ([a39c4a0](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/a39c4a00dcb4ea34eb22acb0e7f9dddda2f431b7))
+
 ### [0.4.1](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.0...v0.4.1) (2023-04-13)
 
 
