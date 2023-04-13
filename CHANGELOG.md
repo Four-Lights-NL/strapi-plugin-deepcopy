@@ -1,5 +1,7 @@
 
 
+## [0.3.5](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.3.4...v0.3.5) (2023-04-13)
+
 ## [0.3.4](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.3.0...v0.3.4) (2023-04-12)
 
 
