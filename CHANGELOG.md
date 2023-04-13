@@ -1,5 +1,13 @@
 
 
+### [0.3.6](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.3.5...v0.3.6) (2023-04-13)
+
+
+### Bug Fixes
+
+* make sure `dist` folder is published ([217edc4](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/217edc466ea1d7da138e9c9719b7569618bb747e))
+* use correct preset when generating changelog ([44074e0](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/44074e012611fc1a2925f53f5a3a964a1e807156))
+
 ## [0.3.5](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.3.4...v0.3.5) (2023-04-13)
 
 ## [0.3.4](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.3.0...v0.3.4) (2023-04-12)
