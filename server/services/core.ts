@@ -59,7 +59,7 @@ export default ({ strapi }: { strapi: Strapi }) => ({
     } catch (e) {
       // Something went wrong when trying to create new entities
       // Rollback created entities
-      for (let index = 0; index < results.length; index += 1) {
+      for (let index = results.length - 1; index >= 0; index -= 1) {
         const entity = results[index]
         // eslint-disable-next-line no-await-in-loop
         await strapi.entityService.delete(entity.contentType, entity.id)
