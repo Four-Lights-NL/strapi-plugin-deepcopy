@@ -61,7 +61,7 @@ pnpm run develop:server
 
 Automatic compilation of admin part
 ```bash
-pnpm run develop:server
+pnpm run develop:admin
 ```
 
 Start strapi server

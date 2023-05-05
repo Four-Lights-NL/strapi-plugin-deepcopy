@@ -55,6 +55,7 @@ export default ({ env }) => {
           __dirname,
           '..',
           '..',
+          'db',
           env('DATABASE_FILENAME', 'data.db')
         ),
       },
