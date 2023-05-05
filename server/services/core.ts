@@ -50,7 +50,11 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         // eslint-disable-next-line no-await-in-loop
         const entity = await strapi.entityService.create(rowContentType, { data })
         idMap[name] = entity.id
-        results.push(entity)
+        if (entity) {
+          results.push(entity)
+        } else {
+          strapi.log.error(`Failed to create ${rowContentType} ${name}`)
+        }
       }
     } catch (e) {
       // Something went wrong when trying to create new entities
