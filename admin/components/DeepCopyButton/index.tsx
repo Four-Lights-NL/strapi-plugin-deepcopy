@@ -1,4 +1,6 @@
 import {
+  Alert,
+  Box,
   Button,
   Dialog,
   DialogBody,
@@ -26,7 +28,7 @@ const DeepCopyButton = () => {
 
   const [contentTypes, setContentTypes] = useState<Record<string, boolean>>({})
   const [busy, setBusy] = useState(false)
-  const [error, setError] = useState('')
+  const [error, setError] = useState<Error | null>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [title, setTitle] = useState(`${initialData.title} - Copy`)
   const [publish, setPublish] = useState(true)
@@ -52,7 +54,7 @@ const DeepCopyButton = () => {
         state: { from: pathname },
       })
     } else {
-      setError(JSON.stringify(newPage.error))
+      setError(newPage.error)
     }
   }
 
@@ -84,17 +86,24 @@ const DeepCopyButton = () => {
         <DialogBody icon={<PluginIcon />}>
           <Flex direction="column" alignItems="center" justifyContent="center" gap={5}>
             <Flex justifyContent="center">
-              <Typography id="confirm-description">
-                Create a full copy, including all related and nested objects.
-              </Typography>
-            </Flex>
-            {error && (
-              <Flex justifyContent="center">
-                <Typography variant="danger">
-                  An error occurred! You could try to use a different internal id.
+              {!error && (
+                <Typography id="confirm-description">
+                  Create a full copy, including all related and nested objects.
                 </Typography>
-              </Flex>
-            )}
+              )}
+              {error && (
+                <Alert variant="danger" title="An error occurred!">
+                  <Box>
+                    <Typography variant="omega" fontWeight="semiBold">
+                      {error.name}
+                    </Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="pi">{error.message}</Typography>
+                  </Box>
+                </Alert>
+              )}
+            </Flex>
           </Flex>
           <Divider unsetMargin={false} />
           <Flex direction="column" alignItems="flex-start" justifyContent="items-stretch" gap={3}>
