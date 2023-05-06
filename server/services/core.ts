@@ -51,16 +51,20 @@ export default ({ strapi }: { strapi: Strapi }) => ({
         const entity = await strapi.entityService.create(rowContentType, { data })
         idMap[name] = entity.id
         if (entity) {
+          strapi.log.info(`Created ${rowContentType} ${name}`)
+          entity.contentType = rowContentType
           results.push(entity)
         } else {
           strapi.log.error(`Failed to create ${rowContentType} ${name}`)
         }
       }
     } catch (e) {
+      strapi.log.error('Failed to create new entities', e)
       // Something went wrong when trying to create new entities
       // Rollback created entities
       for (let index = results.length - 1; index >= 0; index -= 1) {
         const entity = results[index]
+        strapi.log.info(`Rolling back ${entity.contentType} ${entity.id}`)
         // eslint-disable-next-line no-await-in-loop
         await strapi.entityService.delete(entity.contentType, entity.id)
       }
