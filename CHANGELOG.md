@@ -1,5 +1,15 @@
 
 
+### [0.4.6](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.5...v0.4.6) (2023-05-06)
+
+
+### Bug Fixes
+
+* add logging when entity is not created ([b988036](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/b988036e72f04d5cee9a0f351dce4a1c789876cd))
+* clean-up entities on failed clone in reverse order ([b8225b1](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/b8225b1112ae7552663b0b497cb0ea3c6e74e19a))
+* rollback behaviour upon error ([56e1538](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/56e15385d4afbc5cec4e0123cf17cf9f5d6226fc))
+* show returned error in UI ([31d2a45](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/31d2a45fc6fd95f73bac7bc8ea7ad927c29d5526))
+
 ### [0.4.5](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.3...v0.4.5) (2023-04-13)
 
 
