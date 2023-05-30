@@ -24,6 +24,8 @@ module.exports = {
     // https://github.com/lydell/eslint-plugin-simple-import-sort
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
+
+    "import/no-extraneous-dependencies": ["error", {"peerDependencies": true}],
   },
   overrides: [
     {
