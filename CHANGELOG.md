@@ -1,5 +1,13 @@
 
 
+### [0.4.7](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.6...v0.4.7) (2023-05-30)
+
+
+### Bug Fixes
+
+* add workaround for upstream package mismatches to playground ([fb448bc](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/fb448bc1a0fd6eca89dac8c3556ae9380641ccad))
+* readme references incorrect command ([07f7cf7](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/07f7cf7b5d060507b57b2a3f0341980c8d62ac0d))
+
 ### [0.4.6](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.5...v0.4.6) (2023-05-06)
 
 
