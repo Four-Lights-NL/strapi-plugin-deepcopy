@@ -21,8 +21,9 @@ pnpm install @fourlights/strapi-plugin-deep-copy
 
 Then in `config/plugins.js` add the contentTypes where you want to show the button to create a new copy.
 
-```js
-  // your other plugins stuff
+```json5
+{
+  // ...
   'deep-copy': {
     enabled: true,
     config: {
@@ -31,7 +32,8 @@ Then in `config/plugins.js` add the contentTypes where you want to show the butt
       },
     },
   },
-  // more of your plugin stuff
+  // ...
+}
 ```
 
 ## Advanced usage
@@ -40,13 +42,21 @@ The default behaviour is to create a copy for all related/nested entities.
 However, for some entities, this doesn't make sense, e.g. the `admin::user` from Strapi.
 The below is the default behaviour.
 
-```js
-  config: {
-    excludeFromCopy: [
+```json5
+{
+  // ...
+  'deep-copy': {
+    // ...
+    config: {
+      // ...
+      excludeFromCopy: [
         'admin::user', // do not create a copy of these contentTypes (they will be set as relation still)
-    ]
+      ],
+    },
+    // ...
   },
-  // more of your plugin stuff
+  // ...
+}
 ```
 
 
@@ -66,8 +76,7 @@ pnpm run develop:admin
 
 Start strapi server
 ```bash
-cd playground
-pnpm run develop:admin
+pnpm run playground
 ```
 
 Login to the admin with
