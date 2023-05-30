@@ -12,10 +12,12 @@
   },
   "dependencies": {
     "@fourlights/strapi-plugin-deep-copy": "link:..",
-    "@strapi/plugin-i18n": "4.9.0",
-    "@strapi/plugin-users-permissions": "4.9.0",
-    "@strapi/strapi": "4.9.0",
-    "better-sqlite3": "8.0.1"
+    "@strapi/plugin-i18n": "4.10.6",
+    "@strapi/plugin-users-permissions": "4.10.6",
+    "@strapi/strapi": "4.10.6",
+    "codemirror": "6.0.1",
+    "path-to-regexp": "1.7.0",
+    "better-sqlite3": "8.4.0"
   },
   "strapi": {
     "uuid": "2b188734-afc6-4e65-8ea1-3a1b336b1cb6"
@@ -23,6 +25,20 @@
   "engines": {
     "node": ">=14.19.1 <=18.x.x",
     "npm": ">=6.0.0"
+  },
+  "pnpm": {
+    "packageExtensions": {
+      "@strapi/admin": {
+        "dependencies": {
+          "codemirror": "^6.0.0"
+        }
+      },
+      "react-router": {
+        "dependencies": {
+          "path-to-regexp": "1.7.0"
+        }
+      }
+    }
   },
   "license": "MIT"
 }
