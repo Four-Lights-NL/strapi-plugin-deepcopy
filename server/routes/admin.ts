@@ -4,15 +4,31 @@ export default {
     {
       method: 'POST',
       path: '/:contentType/:id',
-      handler: 'core.deepCopy',
+      handler: 'deepCopy.copy',
       config: {
         policies: [],
       },
     },
     {
       method: 'GET',
-      path: '/contentTypes',
-      handler: 'core.getContentTypes',
+      path: '/content-types',
+      handler: 'config.getContentTypes',
+      config: {
+        policies: [],
+      },
+    },
+    {
+      method: 'GET',
+      path: '/:contentType/:id/initial-values',
+      handler: 'config.getInitialValues',
+      config: {
+        policies: [],
+      },
+    },
+    {
+      method: 'POST',
+      path: '/:contentType/:id/:field/fill',
+      handler: 'config.getFillValue',
       config: {
         policies: [],
       },

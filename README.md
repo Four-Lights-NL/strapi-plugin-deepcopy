@@ -28,7 +28,13 @@ Then in `config/plugins.js` add the contentTypes where you want to show the butt
     enabled: true,
     config: {
       contentTypes: {
-        'api::page.page': true,
+        'api::page.page': {
+          enabled: true,
+          showButtonInAdmin: true,
+          uniqueFields: {
+            title: (strapi, src) => `${src.title} (copy)`,
+          }
+        }
       },
     },
   },

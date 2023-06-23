@@ -15,10 +15,20 @@
     "title": {
       "type": "string"
     },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
     "sections": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::section.section"
+    },
+    "members": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user"
     }
   }
 }
