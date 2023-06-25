@@ -2,8 +2,8 @@
   "$schema": "https://json.schemastore.org/tsconfig",
 
   "compilerOptions": {
-    "outDir": "../dist/server",
-    "rootDir": ".",
+    "outDir": "../dist",
+    "rootDirs": [".", "../common"],
 
     "module": "CommonJS",
     "moduleResolution": "Node",
@@ -17,19 +17,25 @@
     "incremental": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "noEmitOnError": true
+    "noEmitOnError": true,
+
+    "paths": {
+      "strapi-plugin-deepcopy/config": ["../common/config"],
+      "strapi-plugin-deepcopy/server": ["./"],
+      "strapi-plugin-deepcopy/server/*": ["./*"],
+    }
   },
 
   "include": [
+    "../common/**/*",
+
     "**/*",
     // Force the JSON files in the src folder to be included
     "**/*.json"
   ],
 
-  "exclude": [
-    "../node_modules/",
-    "../dist/",
 
+  "exclude": [
     // Do not include test files
     "**/*.test.ts"
   ]

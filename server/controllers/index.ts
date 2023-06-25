@@ -1,5 +1,7 @@
-import core from './core'
+import config from './config'
+import deepCopy from './deepCopy'
 
 export default {
-  core,
+  deepCopy,
+  config,
 }

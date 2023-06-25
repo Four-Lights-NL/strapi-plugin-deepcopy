@@ -19,7 +19,11 @@ Install using your favourite package manager
 pnpm install @fourlights/strapi-plugin-deep-copy
 ```
 
-Then in `config/plugins.js` add the contentTypes where you want to show the button to create a new copy.
+Then in `config/plugins.js` add the contentTypes for which you want to enable creating a deep copy.
+Any content-types not listed here will not be copied. Relations to these content types will be the same as on the original entity.
+
+
+Take a look at the following config:
 
 ```json5
 {
@@ -28,7 +32,14 @@ Then in `config/plugins.js` add the contentTypes where you want to show the butt
     enabled: true,
     config: {
       contentTypes: {
-        'api::page.page': true,
+        'api::page.page': {
+          enabled: true,
+          showButtonInAdmin: true,
+        },
+        'api::section.section': {
+          enabled: true,
+          showButtonInAdmin: false,
+        }
       },
     },
   },
@@ -36,11 +47,23 @@ Then in `config/plugins.js` add the contentTypes where you want to show the butt
 }
 ```
 
+This config will enable the deep copy admin button for the `api::page.page` content type.
+If you choose the copy the `api::page.page` entity, any relations to `api::section.section` will be copied as well.
+With this config, the copy action can only be started from the `api::page.page` content type.
+
+Any other relations which are not defined in this config will be set to the same value as on the original entity.
+For example, the strapi internal `createdBy` and `updatedBy` will not copy the use, but will be set to the same user as the original entity.
+
 ## Advanced usage
 
-The default behaviour is to create a copy for all related/nested entities.
-However, for some entities, this doesn't make sense, e.g. the `admin::user` from Strapi.
-The below is the default behaviour.
+### Unique fields
+
+By default, the plugin will append a random hex number `(copy#)` to any unique fields on the newly created entities.
+You can override this behaviour by providing a default value function, which is used for all non-specified unique fields.
+
+For more control you can explicitly specify unique fields and provide a special value function for each field.
+
+Note that the strapi instance is passed to these value resolve functions, so you can also use all strapi's tooling to generate the value.
 
 ```json5
 {
@@ -49,9 +72,16 @@ The below is the default behaviour.
     // ...
     config: {
       // ...
-      excludeFromCopy: [
-        'admin::user', // do not create a copy of these contentTypes (they will be set as relation still)
-      ],
+      contentTypes: {
+        'api::page.page': {
+          // default value function for all implicit unique fields
+          defaultUniqueFieldValue: (strapi, src, name) => `${src[name]} (${new Date().toIsoFormat()})`,
+          // specify explicit unique fields
+          uniqueFields: {
+            slug: (strapi, src, name) => slugify(`${src.title} (copy)`),
+          }
+        },
+      },
     },
     // ...
   },
@@ -59,6 +89,41 @@ The below is the default behaviour.
 }
 ```
 
+### Editable fields
+
+By default, all fields are copied from the original entity. However, you can also specify which fields should be editable from the admin before deep copying an entity.
+This follows a similar approach to the uniquefields, but with some extra functionality.
+
+```json5
+{
+  // ...
+  'deep-copy': {
+    // ...
+    config: {
+      // ...
+      contentTypes: {
+        'api::page.page': {
+          // ...
+          editableFields: {
+            slug: {
+              required: true,  // optional, mark field as required for deep-copy when it's not actually required
+              // initial value for the editable slug field
+              initialValue: (strapi, src, name) => slugify(`${src.title} (copy)`),
+              // optional button for filling the field using the currently available data for the new entity (so, orignal + other editable fields)
+              fillButton: {
+                label: 'Copy from title',
+                value: (data) => slugify(data.title),
+              },
+            },  
+          }
+        },
+      },
+    },
+    // ...
+  },
+  // ...
+}
+```
 
 ## Development
 

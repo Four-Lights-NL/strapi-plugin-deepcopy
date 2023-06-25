@@ -7,7 +7,6 @@ import {
   DialogFooter,
   Divider,
   Field,
-  FieldHint,
   FieldInput,
   FieldLabel,
   Flex,
@@ -19,20 +18,23 @@ import { Lightbulb } from '@strapi/icons'
 import React, { useEffect, useState } from 'react'
 import { useIntl } from 'react-intl'
 import { useHistory } from 'react-router-dom'
-import slugify from 'slugify'
 
+import { ContentTypeConfig } from '../../../common/config'
 import PluginIcon from '../PluginIcon'
 
 const DeepCopyButton = () => {
   const { layout, initialData, isSingleType } = useCMEditViewDataManager()
 
-  const [contentTypes, setContentTypes] = useState<Record<string, boolean>>({})
+  const [isReady, setIsReady] = useState(false)
+  const [contentTypes, setContentTypes] = useState<Record<string, ContentTypeConfig>>({})
   const [busy, setBusy] = useState(false)
-  const [error, setError] = useState<Error | null>(null)
+  const [errors, setErrors] = useState<Error[] | null>(null)
   const [isVisible, setIsVisible] = useState(false)
-  const [title, setTitle] = useState(`${initialData.title} - Copy`)
+  const [isEnabled, setIsEnabled] = useState(false)
   const [publish, setPublish] = useState(true)
-  const [internalId, setInternalId] = useState(slugify(`${initialData.title} - Copy`.toLowerCase()))
+  const [initialValues, setInitialValues] = useState<Record<string, string>>({})
+  const [fillBusy, setFillBusy] = useState<Record<string, boolean>>({})
+  const [editableFieldsData, setEditableFieldsData] = useState<Record<string, string>>({})
 
   const { formatMessage } = useIntl()
   const {
@@ -40,34 +42,74 @@ const DeepCopyButton = () => {
     location: { pathname },
   } = useHistory()
 
-  const handleDuplicate = async () => {
+  const handleDeepCopy = async () => {
     setBusy(true)
-    const newPage = await request(`/deep-copy/${layout.uid}/${initialData.id}`, {
+    const newEntity = await request(`/deep-copy/${layout.uid}/${initialData.id}`, {
       method: 'POST',
-      body: { contentType: layout.uid, id: initialData.id, title, internalId, publish },
+      body: {
+        ...editableFieldsData,
+        contentType: layout.uid,
+        id: initialData.id,
+        publish,
+      },
     })
     setBusy(false)
 
-    if (!newPage.error) {
+    if (!newEntity.errors) {
       push({
-        pathname: pathname.replace(initialData.id, `${newPage.id}`),
+        pathname: pathname.replace(initialData.id, `${newEntity.id}`),
         state: { from: pathname },
       })
     } else {
-      setError(newPage.error)
+      setErrors(newEntity.errors)
     }
   }
 
   useEffect(() => {
-    request('/deep-copy/contentTypes').then((res: any) => setContentTypes(res.contentTypes))
+    request('/deep-copy/content-types').then((res: Record<string, ContentTypeConfig>) =>
+      setContentTypes(res),
+    )
   }, [setContentTypes])
 
-  // Only show button on allowed contentTypes
-  if (!contentTypes) return null
-  if (!contentTypes[layout.uid]) return null
+  useEffect(() => {
+    if (isEnabled) {
+      request(`/deep-copy/${layout.uid}/${initialData.id}/initial-values`).then(
+        (res: Record<string, string>) => {
+          setInitialValues(res)
+          setEditableFieldsData(res)
+          setIsReady(true)
+        },
+      )
+    }
+  }, [isEnabled, initialData, layout, setInitialValues])
 
-  if (isSingleType) return null // We cannot copy a single type entity
-  if (!initialData.id) return null // We cannot copy a non-existing entity
+  useEffect(() => {
+    const contentTypeConfig = contentTypes[layout.uid]
+    if (
+      contentTypeConfig !== undefined &&
+      contentTypeConfig.enabled &&
+      contentTypeConfig.showButtonInAdmin
+    ) {
+      setIsEnabled(true)
+    }
+    // app,
+  }, [contentTypes, layout.uid, setIsEnabled])
+
+  if (!contentTypes) return null
+  const contentTypeConfig = contentTypes[layout.uid]
+
+  // Only show button on allowed contentTypes
+  if (
+    contentTypeConfig === undefined ||
+    !contentTypeConfig.enabled ||
+    !contentTypeConfig.showButtonInAdmin
+  )
+    return null
+
+  if (isSingleType) return null // We cannot copy a single type initialData
+  if (!initialData.id) return null // We cannot copy a non-existing initialData
+
+  const { editableFields } = contentTypeConfig
 
   return (
     <>
@@ -78,64 +120,84 @@ const DeepCopyButton = () => {
         onClick={() => setIsVisible(true)}
       >
         {formatMessage({
-          id: 'deep-copy.components.duplicate.button',
-          defaultMessage: 'Create a copy',
+          id: 'deep-copy.components.copy.button',
+          defaultMessage: 'Create deep copy',
         })}
       </Button>
       <Dialog onClose={() => setIsVisible(false)} title="Create a copy" isOpen={isVisible}>
         <DialogBody icon={<PluginIcon />}>
           <Flex direction="column" alignItems="center" justifyContent="center" gap={5}>
             <Flex justifyContent="center">
-              {!error && (
+              {!errors && (
                 <Typography id="confirm-description">
                   Create a full copy, including all related and nested objects.
                 </Typography>
               )}
-              {error && (
-                <Alert variant="danger" title="An error occurred!">
-                  <Box>
-                    <Typography variant="omega" fontWeight="semiBold">
-                      {error.name}
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography variant="pi">{error.message}</Typography>
-                  </Box>
+              {errors && (
+                <Alert variant="danger" title="Some error(s) occurred!">
+                  {errors.map((error: any, idx) => (
+                    // eslint-disable-next-line react/no-array-index-key
+                    <Box key={`error-${idx}`}>
+                      <Box>
+                        <Typography variant="omega" fontWeight="semiBold">
+                          {error.name}
+                          {error.path ? `- '${error.path}'` : null}
+                        </Typography>
+                      </Box>
+                      <Box>
+                        <Typography variant="pi">{error.message}</Typography>
+                      </Box>
+                    </Box>
+                  ))}
                 </Alert>
               )}
             </Flex>
           </Flex>
           <Divider unsetMargin={false} />
           <Flex direction="column" alignItems="flex-start" justifyContent="items-stretch" gap={3}>
-            <Field name="title" required>
-              <Flex direction="column" alignItems="flex-start" gap={1}>
-                <FieldLabel>New title</FieldLabel>
-                <FieldInput
-                  type="text"
-                  value={title}
-                  onChange={(e: any) => setTitle(e.target.value)}
-                />
-              </Flex>
-            </Field>
-            <Field name="internalId" required>
-              <Flex direction="column" alignItems="flex-start" gap={1}>
-                <FieldLabel>Internal id</FieldLabel>
-                <Flex gap={2}>
-                  <FieldInput
-                    type="text"
-                    value={internalId}
-                    onChange={(e: any) => setInternalId(e.target.value)}
-                  />
-                  <Button
-                    startIcon={<Lightbulb />}
-                    onClick={() => setInternalId(() => slugify(title).toLowerCase())}
-                  >
-                    Use title
-                  </Button>
-                </Flex>
-                <FieldHint>Used as basis for (internal) names for nested components</FieldHint>
-              </Flex>
-            </Field>
+            {editableFields &&
+              Object.entries(editableFields).map(([fieldName, field]) => (
+                <Field name={fieldName} key={fieldName} required>
+                  <Flex direction="column" alignItems="flex-start" gap={1}>
+                    <FieldLabel>New {fieldName}</FieldLabel>
+                    <Flex gap={2}>
+                      <FieldInput
+                        type="text"
+                        value={editableFieldsData[fieldName] ?? initialValues[fieldName]}
+                        placeholder={isReady ? '' : 'loading...'}
+                        required={field.required}
+                        disabled={!isReady}
+                        onChange={(e: any) => {
+                          const data = { ...editableFieldsData }
+                          data[fieldName] = e.target.value
+                          setEditableFieldsData(data)
+                        }}
+                      />
+                      {field.fillButton && (
+                        <Button
+                          startIcon={<Lightbulb />}
+                          loading={fillBusy[fieldName] ?? false}
+                          onClick={async () => {
+                            setFillBusy({ ...fillBusy, [fieldName]: true })
+
+                            const fillValue = await request(
+                              `/deep-copy/${layout.uid}/${initialData.id}/${fieldName}/fill`,
+                              { method: 'POST', data: editableFieldsData },
+                            )
+
+                            const data = { ...editableFieldsData }
+                            data[fieldName] = fillValue[fieldName]
+                            setEditableFieldsData(data)
+                            setFillBusy({ ...fillBusy, [fieldName]: false })
+                          }}
+                        >
+                          {field.fillButton.label}
+                        </Button>
+                      )}
+                    </Flex>
+                  </Flex>
+                </Field>
+              ))}
             <Field name="publish">
               <Flex direction="column" alignItems="flex-start" gap={1}>
                 <FieldLabel>Clone published status</FieldLabel>
@@ -159,13 +221,21 @@ const DeepCopyButton = () => {
           endAction={
             <Button
               startIcon={<PluginIcon />}
-              disabled={title.length === 0 || internalId.length === 0 || busy}
+              disabled={
+                (Object.keys(editableFields).length > 0 &&
+                  Object.keys(editableFieldsData).length !== Object.keys(editableFields).length) ||
+                busy ||
+                !isReady ||
+                Object.keys(editableFields)
+                  .filter((fieldName) => editableFields[fieldName].required)
+                  .some((fieldName) => editableFieldsData[fieldName] === '')
+              }
               loading={busy}
-              onClick={handleDuplicate}
+              onClick={handleDeepCopy}
             >
               {formatMessage({
                 id: 'deep-copy.components.form.button',
-                defaultMessage: 'Create clone',
+                defaultMessage: 'Create deep copy',
               })}
             </Button>
           }

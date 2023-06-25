@@ -2,8 +2,8 @@
   "$schema": "https://json.schemastore.org/tsconfig",
 
   "compilerOptions": {
-    "rootDir": ".",
-    "outDir": "../dist/admin",
+    "rootDirs": [".", "../common"],
+    "outDir": "../dist",
     "target": "ESNext",
     "module": "commonjs",
     "jsx": "react",
@@ -24,15 +24,21 @@
     "resolveJsonModule": true,
   },
 
+  "paths": {
+    "strapi-plugin-deepcopy/config": ["../common/config"],
+    "strapi-plugin-deepcopy/admin": ["./"],
+    "strapi-plugin-deepcopy/admin/*": ["./*"],
+  },
+
   "include": [
+    "../common/**/*",
+
     "**/*",
     // Force the JSON files in the src folder to be included
     "**/*.json"
   ],
 
   "exclude": [
-    "../node_modules/",
-    "../dist/",
     // Do not include test files
     "**/*.test.ts"
   ]
