@@ -52,7 +52,7 @@ If you choose the copy the `api::page.page` entity, any relations to `api::secti
 With this config, the copy action can only be started from the `api::page.page` content type.
 
 Any other relations which are not defined in this config will be set to the same value as on the original entity.
-For example, the strapi internal `createdBy` and `updatedBy` will not copy the use, but will be set to the same user as the original entity.
+For example, the strapi internal `createdBy` and `updatedBy` will not create a new copied user, but will be set to the same user as the original entity.
 
 ## Advanced usage
 
@@ -78,8 +78,10 @@ Note that the strapi instance is passed to these value resolve functions, so you
           defaultUniqueFieldValue: (strapi, src, name) => `${src[name]} (${new Date().toIsoFormat()})`,
           // specify explicit unique fields
           uniqueFields: {
-            slug: (strapi, src, name) => slugify(`${src.title} (copy)`),
-          }
+            slug: {
+              value: (strapi, src, name) => slugify(`${src.title} (copy)`),
+            }
+          },
         },
       },
     },
