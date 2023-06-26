@@ -61,7 +61,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run release
-        run: pnpm release --ci -i ${{ github.event.inputs.bump_type }} -p ${{ github.event.inputs.prerelease_type }}
+        run: pnpm release --ci -i ${{ github.event.inputs.bump_type }} --preRelease ${{ github.event.inputs.prerelease_type }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
