@@ -1,5 +1,12 @@
 
 
+## [1.0.0-rc.0](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.7...v1.0.0-rc.0) (2023-06-26)
+
+
+### Features
+
+* implement configurable content-types and value resolvers ([4a01493](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/4a014938e93d144e969154d7f898aecc1a01cdf2))
+
 ### [0.4.7](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.6...v0.4.7) (2023-05-30)
 
 
