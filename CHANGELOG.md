@@ -1,5 +1,12 @@
 
 
+## [1.0.0-rc.1](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v1.0.0-rc.0...v1.0.0-rc.1) (2023-06-30)
+
+
+### Bug Fixes
+
+* `component` types should always be copied inline ([1c61670](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/1c61670bbc6068f763649b5bea2514f120531016))
+
 ## [1.0.0-rc.0](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v0.4.7...v1.0.0-rc.0) (2023-06-26)
 
 
