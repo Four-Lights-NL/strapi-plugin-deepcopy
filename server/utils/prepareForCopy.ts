@@ -1,9 +1,8 @@
-import { UniqueOption } from '@strapi/strapi'
 import { ContentTypeConfig, UniqueFields } from 'strapi-plugin-deepcopy/config'
 
 const prepareForCopy = async (
   contentType: string,
-  data: any,
+  data: object | object[],
   placeholder: string,
   contentTypes: Record<string, ContentTypeConfig>,
 ) => {
@@ -12,7 +11,7 @@ const prepareForCopy = async (
   const config = contentTypes[contentType]
 
   // Create a copy of data that we can modify
-  const newData = { ...data }
+  const newData: object | object[] = Array.isArray(data) ? [...data] : { ...data }
 
   const emptyFields = {
     id: undefined,
@@ -26,7 +25,7 @@ const prepareForCopy = async (
   const model = { ...(await strapi.getModel(contentType)) } // NOTE: Explicit copy, so get the correct model on every iteration
 
   // Set all unique properties to their values
-  {
+  if (config) {
     const uniqueFields = Object.entries(config.uniqueFields ?? {})
       .filter(
         ([name]: [string, UniqueFields]) =>
@@ -84,17 +83,20 @@ const prepareForCopy = async (
     const components = (
       await Promise.all(
         Object.entries(model.attributes ?? {})
-          .filter(([, attr]: [string, any]) => attr.type === 'component') // filter on component
+          .filter(([, attr]: [string, any]) => attr.type === 'component') // only component types
+          .filter(([name]) => newData[name] !== null) // with data set
           .map(async ([name, attr]: [string, any]) => {
-            if (attr.repeatable === true && newData[name].length === 0) return undefined
+            if (attr.repeatable === true && newData[name]?.length === 0) return undefined
+
             const ret = await prepareForCopy(
               attr.component,
               newData[name],
               `${placeholder}.${name}`,
               contentTypes,
             )
-            newData[name] = (ret[ret.length - 1] as any).data // Set last as inline
-            return ret.slice(0, ret.length - 1) // Return all but last
+
+            newData[name] = ret[ret.length - 1]?.data ?? {} // actual component is always the last in the array
+            return ret.slice(0, -1) // all other items are forward declared placeholders that need to be created later on
           }),
       )
     ).flat(1)
@@ -178,7 +180,9 @@ const prepareForCopy = async (
   prepared.push({
     contentType,
     model,
-    data: { ...newData, ...emptyFields },
+    data: Array.isArray(newData)
+      ? newData.map((d) => ({ ...d, ...emptyFields }))
+      : { ...newData, ...emptyFields },
     placeholder,
   })
 
