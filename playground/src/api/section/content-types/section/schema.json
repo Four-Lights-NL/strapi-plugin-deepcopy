@@ -24,6 +24,16 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::section.section"
+    },
+    "coolitems": {
+      "type": "component",
+      "repeatable": true,
+      "component": "cms.cool-component"
+    },
+    "target": {
+      "type": "component",
+      "repeatable": false,
+      "component": "cms.special"
     }
   }
 }
