@@ -8,6 +8,7 @@ on:
         default: 'patch'
         type: choice
         options:
+          - pre
           - patch
           - minor
           - major
