@@ -16,7 +16,6 @@ import {
 import { request, useCMEditViewDataManager } from '@strapi/helper-plugin'
 import { Lightbulb } from '@strapi/icons'
 import React, { useEffect, useState } from 'react'
-import { useIntl } from 'react-intl'
 import { useHistory } from 'react-router-dom'
 
 import { ContentTypeConfig } from '../../../common/config'
@@ -36,7 +35,6 @@ const DeepCopyButton = () => {
   const [fillBusy, setFillBusy] = useState<Record<string, boolean>>({})
   const [editableFieldsData, setEditableFieldsData] = useState<Record<string, string>>({})
 
-  const { formatMessage } = useIntl()
   const {
     push,
     location: { pathname },
@@ -119,10 +117,7 @@ const DeepCopyButton = () => {
         variant="secondary"
         onClick={() => setIsVisible(true)}
       >
-        {formatMessage({
-          id: 'deep-copy.components.copy.button',
-          defaultMessage: 'Create deep copy',
-        })}
+        Create deep copy
       </Button>
       <Dialog onClose={() => setIsVisible(false)} title="Create a copy" isOpen={isVisible}>
         <DialogBody icon={<PluginIcon />}>
@@ -233,10 +228,7 @@ const DeepCopyButton = () => {
               loading={busy}
               onClick={handleDeepCopy}
             >
-              {formatMessage({
-                id: 'deep-copy.components.form.button',
-                defaultMessage: 'Create deep copy',
-              })}
+              Create deep copy
             </Button>
           }
         />
