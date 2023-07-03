@@ -1,7 +1,7 @@
 # Strapi plugin deep-copy
 
 The default behaviour in Strapi is to create a shallow copy when duplicating an entity.
-This means that any relations are lost and have to be duplicated seperately and connected manually to the newly created entities.
+This means that any relations are lost and have to be duplicated separately and connected manually to the newly created entities.
 
 This plugin provides a custom `copy` action when viewing an entity in the Strapi admin which clones the entity and all it's related models, and connects the newly created entities in the same way as the original.
 
@@ -94,7 +94,7 @@ Note that the strapi instance is passed to these value resolve functions, so you
 ### Editable fields
 
 By default, all fields are copied from the original entity. However, you can also specify which fields should be editable from the admin before deep copying an entity.
-This follows a similar approach to the uniquefields, but with some extra functionality.
+This follows a similar approach to the `uniquefields`, but with some extra functionality.
 
 ```json5
 {
@@ -110,11 +110,11 @@ This follows a similar approach to the uniquefields, but with some extra functio
             slug: {
               required: true,  // optional, mark field as required for deep-copy when it's not actually required
               // initial value for the editable slug field
-              initialValue: (strapi, src, name) => slugify(`${src.title} (copy)`),
-              // optional button for filling the field using the currently available data for the new entity (so, orignal + other editable fields)
+              initialValue: (strapi, src, name) => slugify(`${src[name]} (copy)`, { strict: true }),
+              // optional button for filling the field using the currently available data for the new entity (so, original + other editable fields)
               fillButton: {
                 label: 'Copy from title',
-                value: (data) => slugify(data.title),
+                value: (data) => slugify(data.title, { strict: true }),
               },
             },  
           }
