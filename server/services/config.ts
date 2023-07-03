@@ -1,4 +1,4 @@
-import { ContentTypeSchema, RequiredOption, Strapi, UniqueOption } from '@strapi/strapi'
+import { Attribute, Schema, Strapi } from '@strapi/strapi'
 import slugify from 'slugify'
 import {
   ContentTypeConfig,
@@ -9,7 +9,7 @@ import {
 
 import { populateObject } from '../utils'
 
-const getUniqueFields = (model: ContentTypeSchema, resolveValueFn: ResolveValueFn<any>) => {
+const getUniqueFields = (model: Schema.ContentType, resolveValueFn: ResolveValueFn<any>) => {
   const uniqueFields: Record<string, UniqueFields> = {}
 
   for (let i = 0; i < Object.entries(model.attributes ?? {}).length; i += 1) {
@@ -24,7 +24,7 @@ const getUniqueFields = (model: ContentTypeSchema, resolveValueFn: ResolveValueF
         : resolveValueFn
 
     // NOTE: An `uid` field is also implicitly `unique` but not necessarily marked as such
-    if ((attr as UniqueOption).unique || attr.type === 'uid') {
+    if ((attr as Attribute.UniqueOption).unique || attr.type === 'uid') {
       uniqueFields[fieldName] = {
         value: (strapi: Strapi, src: never, name: string) => valueWrapperFn(strapi, src, name),
       }
@@ -35,7 +35,7 @@ const getUniqueFields = (model: ContentTypeSchema, resolveValueFn: ResolveValueF
 }
 
 const getEditableFields = (
-  model: ContentTypeSchema,
+  model: Schema.ContentType,
   editableFields: Record<string, EditableFields>,
 ) => {
   const newEditableFields = { ...editableFields }
@@ -44,10 +44,10 @@ const getEditableFields = (
     const field = model.attributes[fieldName]
 
     if (fieldConfig.required === undefined) {
-      newEditableFields[fieldName].required = (field as RequiredOption).required ?? false
+      newEditableFields[fieldName].required = (field as Attribute.RequiredOption).required ?? false
     }
 
-    if ((field as RequiredOption).required && fieldConfig.required === false) {
+    if ((field as Attribute.RequiredOption).required && fieldConfig.required === false) {
       strapi.log.warn(
         `(strapi-plugin-deepcopy) Field '${fieldName}' is explicitly set as not required but is required in strapi`,
       )
