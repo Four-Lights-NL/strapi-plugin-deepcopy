@@ -5,8 +5,6 @@ This means that any relations are lost and have to be duplicated separately and 
 
 This plugin provides a custom `copy` action when viewing an entity in the Strapi admin which clones the entity and all it's related models, and connects the newly created entities in the same way as the original.
 
-The plugin is currently in a beta state: it's working, but the configuration is not yet where I want it to be for it to be released as stable.
-
 ## Screenshot
 
 ![image](https://user-images.githubusercontent.com/112890430/231699202-730b2366-12e9-443f-88bc-f83cae829ce3.png)
