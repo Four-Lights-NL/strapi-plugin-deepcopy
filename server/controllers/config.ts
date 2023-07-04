@@ -14,6 +14,6 @@ export default ({ strapi }: { strapi: Strapi }) => ({
     ctx.body = await strapi
       .plugin('deep-copy')
       .service('config')
-      .getFillValue({ ...params, ...body })
+      .getFillValue({ ...params, data: body })
   },
 })

@@ -177,7 +177,7 @@ const DeepCopyButton = () => {
 
                             const fillValue = await request(
                               `/deep-copy/${layout.uid}/${initialData.id}/${fieldName}/fill`,
-                              { method: 'POST', data: editableFieldsData },
+                              { method: 'POST', body: editableFieldsData },
                             )
 
                             const data = { ...editableFieldsData }
