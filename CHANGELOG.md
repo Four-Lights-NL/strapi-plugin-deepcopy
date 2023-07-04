@@ -1,5 +1,13 @@
 
 
+## [1.0.0-rc.2](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2023-07-04)
+
+
+### Bug Fixes
+
+* fill button should use input data to determine value ([0bcb233](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/0bcb2335c0afb2019258ed79bde0b1f68534f056))
+* initial values for deep-copy should only be retrieved once ([6b1ad9a](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/6b1ad9a5a880946d4ecdb6f372fa9467acf41b8b))
+
 ## [1.0.0-rc.1](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v1.0.0-rc.0...v1.0.0-rc.1) (2023-06-30)
 
 
