@@ -9,11 +9,14 @@ export default ({ env }) => ({
           enabled: true,
           showButtonInAdmin: true,
           editableFields: {
+            title: {
+              initialValue: (strapi, src, name) => `${src[name]} (Copy)`,
+            },
             slug: {
-              initialValue: (strapi, src) => `${src.slug}-copy`,
+              initialValue: (strapi, src, name) => `${src[name]}-copy`,
               fillButton: {
                 label: 'Set from title',
-                value: (data) => slugify(data.title)
+                value: (data) => slugify(data.title, { lower: true, strict: true })
               }
             }
           }

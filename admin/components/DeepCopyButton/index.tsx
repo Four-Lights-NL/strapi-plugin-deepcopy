@@ -16,7 +16,6 @@ import {
 import { request, useCMEditViewDataManager } from '@strapi/helper-plugin'
 import { Lightbulb } from '@strapi/icons'
 import React, { useEffect, useState } from 'react'
-import { useIntl } from 'react-intl'
 import { useHistory } from 'react-router-dom'
 
 import { ContentTypeConfig } from '../../../common/config'
@@ -36,7 +35,6 @@ const DeepCopyButton = () => {
   const [fillBusy, setFillBusy] = useState<Record<string, boolean>>({})
   const [editableFieldsData, setEditableFieldsData] = useState<Record<string, string>>({})
 
-  const { formatMessage } = useIntl()
   const {
     push,
     location: { pathname },
@@ -72,16 +70,18 @@ const DeepCopyButton = () => {
   }, [setContentTypes])
 
   useEffect(() => {
-    if (isEnabled) {
+    if (isEnabled && Object.keys(initialValues).length === 0 && !busy && !isReady) {
+      setBusy(true)
       request(`/deep-copy/${layout.uid}/${initialData.id}/initial-values`).then(
         (res: Record<string, string>) => {
+          setBusy(false)
           setInitialValues(res)
           setEditableFieldsData(res)
           setIsReady(true)
         },
       )
     }
-  }, [isEnabled, initialData, layout, setInitialValues])
+  }, [isEnabled, busy, initialData, layout, initialValues, isReady])
 
   useEffect(() => {
     const contentTypeConfig = contentTypes[layout.uid]
@@ -119,10 +119,7 @@ const DeepCopyButton = () => {
         variant="secondary"
         onClick={() => setIsVisible(true)}
       >
-        {formatMessage({
-          id: 'deep-copy.components.copy.button',
-          defaultMessage: 'Create deep copy',
-        })}
+        Create deep copy
       </Button>
       <Dialog onClose={() => setIsVisible(false)} title="Create a copy" isOpen={isVisible}>
         <DialogBody icon={<PluginIcon />}>
@@ -182,7 +179,7 @@ const DeepCopyButton = () => {
 
                             const fillValue = await request(
                               `/deep-copy/${layout.uid}/${initialData.id}/${fieldName}/fill`,
-                              { method: 'POST', data: editableFieldsData },
+                              { method: 'POST', body: editableFieldsData },
                             )
 
                             const data = { ...editableFieldsData }
@@ -233,10 +230,7 @@ const DeepCopyButton = () => {
               loading={busy}
               onClick={handleDeepCopy}
             >
-              {formatMessage({
-                id: 'deep-copy.components.form.button',
-                defaultMessage: 'Create deep copy',
-              })}
+              Create deep copy
             </Button>
           }
         />

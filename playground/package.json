@@ -12,12 +12,14 @@
   },
   "dependencies": {
     "@fourlights/strapi-plugin-deep-copy": "link:..",
-    "@strapi/plugin-i18n": "4.10.6",
-    "@strapi/plugin-users-permissions": "4.10.6",
-    "@strapi/strapi": "4.10.6",
+    "@strapi/plugin-i18n": "4.11.3",
+    "@strapi/plugin-users-permissions": "4.11.3",
+    "@strapi/strapi": "4.11.3",
+    "better-sqlite3": "8.4.0",
     "codemirror": "6.0.1",
     "path-to-regexp": "1.7.0",
-    "better-sqlite3": "8.4.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "strapi": {
     "uuid": "2b188734-afc6-4e65-8ea1-3a1b336b1cb6"
@@ -27,10 +29,14 @@
     "npm": ">=6.0.0"
   },
   "pnpm": {
+    "overrides": {
+      "codemirror": "$codemirror"
+    },
     "packageExtensions": {
       "@strapi/admin": {
         "dependencies": {
-          "codemirror": "^6.0.0"
+          "codemirror": "$codemirror",
+          "react-dom": "$react-dom"
         }
       },
       "react-router": {
