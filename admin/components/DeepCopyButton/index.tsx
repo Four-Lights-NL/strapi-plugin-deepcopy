@@ -70,16 +70,18 @@ const DeepCopyButton = () => {
   }, [setContentTypes])
 
   useEffect(() => {
-    if (isEnabled) {
+    if (isEnabled && Object.keys(initialValues).length === 0 && !busy && !isReady) {
+      setBusy(true)
       request(`/deep-copy/${layout.uid}/${initialData.id}/initial-values`).then(
         (res: Record<string, string>) => {
+          setBusy(false)
           setInitialValues(res)
           setEditableFieldsData(res)
           setIsReady(true)
         },
       )
     }
-  }, [isEnabled, initialData, layout, setInitialValues])
+  }, [isEnabled, busy, initialData, layout, initialValues, isReady])
 
   useEffect(() => {
     const contentTypeConfig = contentTypes[layout.uid]
