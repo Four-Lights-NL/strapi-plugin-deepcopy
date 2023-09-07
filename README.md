@@ -1,3 +1,6 @@
+*update*: as of https://github.com/strapi/strapi/releases/tag/v4.11.3 it seems that Strapi supports cloning relations as well.
+So you probably don't need this plugin.
+
 # Strapi plugin deep-copy
 
 The default behaviour in Strapi is to create a shallow copy when duplicating an entity.
