@@ -1,6 +1,6 @@
 {
   "name": "@fourlights/strapi-plugin-deep-copy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "This plugin enables copying entities including their relations.",
   "strapi": {
     "name": "deep-copy",
