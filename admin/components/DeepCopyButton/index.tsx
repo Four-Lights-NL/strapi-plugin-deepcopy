@@ -70,7 +70,14 @@ const DeepCopyButton = () => {
   }, [setContentTypes])
 
   useEffect(() => {
-    if (layout.uid && isEnabled && Object.keys(initialValues).length === 0 && !busy && !isReady) {
+    if (
+      layout.uid &&
+      initialData.id &&
+      isEnabled &&
+      Object.keys(initialValues).length === 0 &&
+      !busy &&
+      !isReady
+    ) {
       setBusy(true)
       request(`/deep-copy/${layout.uid}/${initialData.id}/initial-values`).then(
         (res: Record<string, string>) => {
