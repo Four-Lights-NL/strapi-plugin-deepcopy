@@ -60,7 +60,7 @@
     "Thomas Rijpstra - Four Lights <thomas@fourlights.nl> (https://github.com/trijpstra-fourlights)"
   ],
   "engines": {
-    "node": ">=14.19.1 <=18.x.x",
+    "node": ">=14.19.1",
     "npm": ">=6.0.0"
   },
   "scripts": {
