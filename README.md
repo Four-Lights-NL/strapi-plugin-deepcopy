@@ -1,5 +1,10 @@
 # Strapi plugin deep-copy
 
+## Compatibility
+
+- **Strapi v5** use v2.0 or later
+- **Strapi v4** use v1.0.3 or earlier
+
 The default behaviour in Strapi is to create a shallow copy when duplicating an entity.
 This means that any relations are lost and have to be duplicated separately and connected manually to the newly created entities.
 

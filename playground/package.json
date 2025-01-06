@@ -11,40 +11,21 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@fourlights/strapi-plugin-deep-copy": "link:..",
-    "@strapi/plugin-i18n": "4.11.3",
-    "@strapi/plugin-users-permissions": "4.11.3",
-    "@strapi/strapi": "4.11.3",
-    "better-sqlite3": "8.4.0",
-    "codemirror": "6.0.1",
-    "path-to-regexp": "1.7.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "@fourlights/strapi-plugin-deep-copy": "../",
+    "@strapi/plugin-users-permissions": "5.6.0",
+    "@strapi/strapi": "5.6.0",
+    "better-sqlite3": "11.5.0",
+    "nypm": "^0.4.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.1",
+    "styled-components": "^6.1.13"
   },
   "strapi": {
     "uuid": "2b188734-afc6-4e65-8ea1-3a1b336b1cb6"
   },
-  "engines": {
-    "node": ">=14.19.1 <=18.x.x",
-    "npm": ">=6.0.0"
-  },
-  "pnpm": {
-    "overrides": {
-      "codemirror": "$codemirror"
-    },
-    "packageExtensions": {
-      "@strapi/admin": {
-        "dependencies": {
-          "codemirror": "$codemirror",
-          "react-dom": "$react-dom"
-        }
-      },
-      "react-router": {
-        "dependencies": {
-          "path-to-regexp": "1.7.0"
-        }
-      }
-    }
-  },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "qs": "^6.13.1"
+  }
 }

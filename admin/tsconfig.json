@@ -1,45 +1,21 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@strapi/typescript-utils/tsconfigs/admin",
 
   "compilerOptions": {
-    "rootDirs": [".", "../common"],
-    "outDir": "../dist",
-    "target": "ESNext",
-    "module": "commonjs",
-    "jsx": "react",
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "removeComments": true,
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-    "downlevelIteration": true,
-    "incremental": true,
-    "allowJs": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-  },
-
-  "paths": {
-    "strapi-plugin-deepcopy/config": ["../common/config"],
-    "strapi-plugin-deepcopy/admin": ["./"],
-    "strapi-plugin-deepcopy/admin/*": ["./*"],
+    "rootDir": "../",
+    "baseUrl": ".",
+    "paths": {
+      "#config": ["../common/config"]
+    }
   },
 
   "include": [
     "../common/**/*",
+    "./custom.d.ts",
 
     "**/*",
-    // Force the JSON files in the src folder to be included
     "**/*.json"
   ],
 
-  "exclude": [
-    // Do not include test files
-    "**/*.test.ts"
-  ]
+  "exclude": ["**/*.test.ts"]
 }

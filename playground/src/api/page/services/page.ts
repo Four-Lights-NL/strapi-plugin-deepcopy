@@ -1,7 +1,7 @@
 /**
- * page service
+ * page services
  */
 
-import { factories } from '@strapi/strapi';
+import { factories } from "@strapi/strapi"
 
-export default factories.createCoreService('api::page.page');
+export default factories.createCoreService("api::page.page")

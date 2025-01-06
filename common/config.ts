@@ -1,16 +1,10 @@
-import type { Strapi } from '@strapi/strapi'
+import type { Core, UID } from "@strapi/strapi"
 
-type UniqueFields =
-  | UniqueFieldConfig<string>
-  | UniqueFieldConfig<number>
-  | UniqueFieldConfig<boolean>
+type UniqueFields = UniqueFieldConfig<string> | UniqueFieldConfig<number> | UniqueFieldConfig<boolean>
 
-type EditableFields =
-  | EditableFieldConfig<string>
-  | EditableFieldConfig<number>
-  | EditableFieldConfig<boolean>
+type EditableFields = EditableFieldConfig<string> | EditableFieldConfig<number> | EditableFieldConfig<boolean>
 
-type ResolveValueFn<T> = (strapi: Strapi, src: never, name: string) => T
+type ResolveValueFn<T> = (strapi: Core.Strapi, src: never, name: string) => T
 
 interface ContentTypeConfig {
   enabled: boolean
@@ -35,11 +29,11 @@ interface FillButtonConfig {
 }
 
 interface Config {
-  contentTypes: Record<string, ContentTypeConfig>
-  defaultUniqueFieldsValue: ResolveValueFn<any>
+  contentTypes: Record<UID.ContentType, ContentTypeConfig>
+  defaultUniqueFieldsValue: ResolveValueFn<string | number | boolean>
 }
 
-export {
+export type {
   Config,
   ContentTypeConfig,
   EditableFieldConfig,
