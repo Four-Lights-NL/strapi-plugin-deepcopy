@@ -45,9 +45,14 @@ const DeepCopyModalFooter = ({
     setIsBusy(false)
 
     if (!newEntity.errors) {
-      // navigate the user to the newly created (top-level) document
-      const newEntityPath = join(pathname.replace(documentId, ""), `${newEntity.documentId}`)
-      navigate(newEntityPath, { state: { from: pathname } })
+      // Workaround for content-manager not being aware of our new entities
+      // FIXME: Create entities using `useDocumentActions` hook and then navigate using `react-router-dom`
+      /*
+        // navigate the user to the newly created (top-level) document
+        const newEntityPath = join(pathname.replace(documentId, ""), `${newEntity.documentId}`)
+        navigate(newEntityPath, { state: { from: pathname } })
+       */
+      window.location.href = join(window.location.pathname.replace(documentId, ""), `${newEntity.documentId}`)
 
       // NOTE: Probably superfluous as we're navigating away
       setIsOpen(false)
