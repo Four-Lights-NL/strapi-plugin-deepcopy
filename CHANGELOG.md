@@ -1,4 +1,14 @@
+# Changelog
 
+## [2.0.0](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v1.0.3...v2.0.0) (2025-01-07)
+
+### Features
+
+* support strapi v5.0 ([f627868](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/f6278681b6d514d875e914c4bc62145f71c28794))
+
+### Bug Fixes
+
+* add workaround to refresh content manager cache after deep copy ([1797474](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/17974746b4ddeed58b31f77e612928d7deb4cbfc))
 
 ### [1.0.3](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v1.0.2...v1.0.3) (2024-10-24)
 
