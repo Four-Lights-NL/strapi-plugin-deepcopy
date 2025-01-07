@@ -9,7 +9,7 @@ permissions:
   contents: write
 
 jobs:
-  linting-and-formatting:
+  with-biome:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
