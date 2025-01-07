@@ -1,93 +1,102 @@
 {
-  "name": "@fourlights/strapi-plugin-deep-copy",
-  "version": "1.0.3",
-  "description": "This plugin enables copying entities including their relations.",
+  "version": "1.1.0",
+  "keywords": [
+    "strapi",
+    "plugin"
+  ],
+  "type": "commonjs",
+  "exports": {
+    "./package.json": "./package.json",
+    "./strapi-admin": {
+      "types": "./dist/admin/src/index.d.ts",
+      "source": "./admin/src/index.ts",
+      "import": "./dist/admin/index.mjs",
+      "require": "./dist/admin/index.js",
+      "default": "./dist/admin/index.js"
+    },
+    "./strapi-server": {
+      "types": "./dist/server/src/index.d.ts",
+      "source": "./server/src/index.ts",
+      "import": "./dist/server/index.mjs",
+      "require": "./dist/server/index.js",
+      "default": "./dist/server/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "strapi-plugin build",
+    "watch": "strapi-plugin watch",
+    "watch:link": "strapi-plugin watch:link",
+    "verify": "strapi-plugin verify",
+    "test": "cross-env npm-run-all test:ts:*",
+    "test:ts:front": "tsc -p admin/tsconfig.json",
+    "test:ts:back": "tsc -p server/tsconfig.json",
+    "playground": "cd playgorund && $npm_pathexec run develop:admin",
+    "prepublish": "cross-env npm-run-all build",
+    "release": "release-it",
+    "ci": "cross-env npm-run-all ci:*",
+    "ci:admin": "biome ci admin",
+    "ci:server": "biome ci server"
+  },
+  "dependencies": {
+    "@strapi/design-system": "^2.0.0-rc.14",
+    "@strapi/icons": "^2.0.0-rc.14",
+    "nypm": "^0.4.1",
+    "react-intl": "^7.0.4",
+    "slugify": "^1.6.6"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@mobily/ts-belt": "^3.13.1",
+    "@release-it/conventional-changelog": "^9.0.2",
+    "@strapi/content-manager": "^5.6.0",
+    "@strapi/sdk-plugin": "^5.2.8",
+    "@strapi/strapi": "^5.6.0",
+    "@strapi/typescript-utils": "^5.6.0",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.1",
+    "cross-env": "^7.0.3",
+    "koa": "^2.15.3",
+    "npm-run-all": "^4.1.5",
+    "pathe": "^1.1.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.27.0",
+    "release-it": "^17.10.0",
+    "simple-git": "^3.27.0",
+    "styled-components": "^6.1.13",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "@strapi/sdk-plugin": "^5.2.8",
+    "@strapi/strapi": "^5.6.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.1",
+    "styled-components": "^6.1.13"
+  },
   "strapi": {
     "name": "deep-copy",
     "description": "This plugin enables copying entities including their relations.",
     "kind": "plugin",
     "displayName": "Deep Copy"
   },
-  "dependencies": {
-    "slugify": "^1.6.6",
-    "strapi-plugin-populate-deep": "^2.0.0"
-  },
-  "peerDependencies": {
-    "@strapi/helper-plugin": "^4.3.0",
-    "@strapi/strapi": "^4.3.0",
-    "react": "^17.0.0 || ^18.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0",
-    "react-router-dom": "^5.3.4"
-  },
-  "devDependencies": {
-    "@release-it/conventional-changelog": "^5.1.1",
-    "@strapi/design-system": "^1.8.0",
-    "@strapi/helper-plugin": "^4.11.3",
-    "@strapi/icons": "^1.8.0",
-    "@strapi/strapi": "^4.11.3",
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
-    "@types/react-router-dom": "^5.3.3",
-    "@typescript-eslint/eslint-plugin": "^5.61.0",
-    "@typescript-eslint/parser": "^5.61.0",
-    "cross-env": "^7.0.3",
-    "eslint": "^8.44.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^17.0.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^2.8.8",
-    "prettier-eslint": "^15.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^5.3.4",
-    "release-it": "^15.11.0",
-    "typescript": "^5.1.6"
-  },
-  "files": [
-    "dist",
-    "admin",
-    "server",
-    "strapi-admin.js",
-    "strapi-server.js",
-    "README.md"
-  ],
+  "name": "@fourlights/strapi-plugin-deep-copy",
+  "description": "This plugin enables copying entities including their relations.",
+  "license": "MIT",
   "author": "Four Lights <engineering@fourlights.nl> (https://github.com/Four-Lights-NL/strapi-plugin-deepcopy)",
   "maintainers": [
     "Thomas Rijpstra - Four Lights <thomas@fourlights.nl> (https://github.com/trijpstra-fourlights)"
   ],
-  "engines": {
-    "node": ">=14.19.1",
-    "npm": ">=6.0.0"
-  },
-  "scripts": {
-    "prepublish": "cross-env npm-run-all build",
-    "release": "release-it",
-    "lint": "cross-env npm-run-all lint:*",
-    "lint:admin": "eslint admin",
-    "lint:server": "eslint server",
-    "build": "cross-env npm-run-all build:*",
-    "build:admin": "tsc -p admin/tsconfig.json",
-    "build:server": "tsc -p server/tsconfig.json",
-    "develop:admin": "tsc -p admin/tsconfig.json -w",
-    "develop:server": "tsc -p server/tsconfig.json -w",
-    "playground": "cd playground && pnpm run develop:admin"
-  },
-  "license": "MIT",
-  "main": "strapi-admin.js",
+  "homepage": "https://github.com/Four-Lights-NL/strapi-plugin-deepcopy#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Four-Lights-NL/strapi-plugin-deepcopy.git"
   },
   "bugs": {
     "url": "https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/issues"
-  },
-  "homepage": "https://github.com/Four-Lights-NL/strapi-plugin-deepcopy#readme",
-  "keywords": [
-    "strapi",
-    "plugin"
-  ]
+  }
 }

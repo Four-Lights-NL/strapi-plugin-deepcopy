@@ -1,0 +1,100 @@
+import {
+  Accordion,
+  Box,
+  Card,
+  CardBadge, CardBody,
+  CardContent,
+  CardSubtitle, CardTitle, Flex,
+  Typography
+} from "@strapi/design-system";
+import type { Data, Schema, UID } from "@strapi/strapi";
+
+import { Duplicate, Link } from "@strapi/icons";
+import type { ContentTypeConfig } from "#config";
+
+export type DeepCopyStepType = {
+  contentType: UID.ContentType
+  model: Schema.ContentType & { __schema__: Schema.ContentType }
+  data: Record<string, Data.Entity>
+  placeholder: string
+}
+
+type DeepCopyStepProps = {
+  contentTypes: Record<string, ContentTypeConfig>
+  mutations: DeepCopyStepType[]
+  step: DeepCopyStepType
+  action?: "copy" | "link"
+}
+const DeepCopyStep = ({ contentTypes, mutations, step, action = "copy" }: DeepCopyStepProps) => {
+  const relations = Object.entries(step.model.__schema__.attributes)
+    .filter(([, attr]) => attr.type === "relation")
+    .map(([name, attr]) => [name, attr as Schema.Attribute.RelationWithTarget] as const)
+  const nonRelations = Object.entries(step.model.__schema__.attributes)
+    .filter(([, attr]) => attr.type !== "relation")
+
+  console.log('step', step)
+  console.log('relations', relations)
+  console.log('mutations', mutations)
+
+  return (
+    <Card>
+      <CardBody>
+        <Box padding={2} background="primary100">
+          { action === "copy" ? <Duplicate /> : <Link /> }
+        </Box>
+        <CardContent paddingLeft={2}>
+          <CardTitle>
+            <Typography variant="sigma" paddingTop={2}>{ `${step.data[nonRelations[0][0]]}` }</Typography>
+
+            {/* <Accordion.Root> */}
+            {/*   <Accordion.Item value={step.placeholder}> */}
+            {/*     <Accordion.Header> */}
+            {/*       <Accordion.Trigger description={`Data for ${step.model.info.displayName}`} caretPosition="right"> */}
+            {/*         { `${step.data[nonRelations[0][0]]}` } */}
+            {/*       </Accordion.Trigger> */}
+            {/*     </Accordion.Header> */}
+            {/*     <Accordion.Content> */}
+            {/*       {nonRelations.map(([name]) => { */}
+            {/*         const value = step.data[name] */}
+            {/*         return ( */}
+            {/*           value !== null ? */}
+            {/*             <Flex key={`${step.placeholder}-${name}`} justifyContent="space-between"> */}
+            {/*               <Typography textColor="neutral600" variant="sigma">{name}</Typography> */}
+            {/*               <Typography style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{Array.isArray(value) ? `(${value.length})` : `${value}`}</Typography> */}
+            {/*             </Flex> :  null */}
+            {/*         ) */}
+            {/*       })} */}
+            {/*     </Accordion.Content> */}
+            {/*   </Accordion.Item> */}
+            {/* </Accordion.Root> */}
+
+            {relations.map(([name, attr]) => {
+              const { target } = attr
+
+              const copy = "connect" in step.data[name]
+              const data = copy ? step.data[name].connect : [] // step.data[name]
+
+              return data.length > 0 ? (
+                <Box key={`${step.placeholder}-${name}`} paddingTop={6}>
+                  <Typography textColor="neutral600" variant="sigma" paddingBottom={2}>{name} ({ data.length })</Typography>
+                  {data.map((documentId: string) => {
+                    const nextStep = mutations.findLastIndex((s) => s.placeholder === documentId && s.contentType === target)
+                    return nextStep !== -1
+                      ? <DeepCopyStep key={`${step.placeholder}-${name}-${documentId}`}
+                                      contentTypes={contentTypes}
+                                      mutations={mutations.slice(0, nextStep)}
+                                      step={mutations[nextStep]} action={copy ? "copy" : "link"} />
+                      : "Cannot find next step" // JSON.stringify(data)
+                  })}
+                </Box>
+              ) : null
+            })}
+          </CardTitle>
+        </CardContent>
+        <CardBadge>{ step.model.info.displayName }</CardBadge>
+      </CardBody>
+    </Card>
+  )
+}
+
+export { DeepCopyStep }

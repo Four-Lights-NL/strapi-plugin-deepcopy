@@ -1,28 +1,14 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@strapi/typescript-utils/tsconfigs/server",
 
   "compilerOptions": {
     "outDir": "../dist",
-    "rootDirs": [".", "../common"],
-
-    "module": "CommonJS",
-    "moduleResolution": "Node",
-    "lib": ["ES2020"],
-    "target": "ES2019",
-
-    "strict": false,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-
-    "incremental": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "noEmitOnError": true,
+    "rootDir": "../",
 
     "paths": {
       "strapi-plugin-deepcopy/config": ["../common/config"],
-      "strapi-plugin-deepcopy/server": ["./"],
-      "strapi-plugin-deepcopy/server/*": ["./*"],
+      "strapi-plugin-deepcopy/server": ["./src"],
+      "strapi-plugin-deepcopy/server/*": ["./src/*"]
     }
   },
 
@@ -33,7 +19,6 @@
     // Force the JSON files in the src folder to be included
     "**/*.json"
   ],
-
 
   "exclude": [
     // Do not include test files

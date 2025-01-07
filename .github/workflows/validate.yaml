@@ -10,34 +10,23 @@ on:
       - main
 
 jobs:
-  linting:
+  ci:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
+      - name: Prepare
+        uses: ./.github/actions/prepare
 
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
-          cache-dependency-path: |
-            pnpm-lock.yaml
+      - name: Tests
+        run: npm run test
 
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Lint
-        run: pnpm lint
+      - name: Biome CI
+        run: npm run ci
 
   build:
     runs-on: ubuntu-latest
@@ -45,24 +34,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
-          cache-dependency-path: |
-            pnpm-lock.yaml
-
-      - name: Install
-        run: pnpm install --frozen-lockfile
+      - name: Prepare
+        uses: ./.github/actions/prepare
 
       - name: Build
-        run: pnpm build
+        run: npm run build
+
+      - name: Verify
+        run: npm run verify
