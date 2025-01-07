@@ -10,13 +10,13 @@ This means that any relations are lost and have to be duplicated separately and 
 
 This plugin provides a custom `copy` action when viewing an entity in the Strapi admin which clones the entity and all it's related models, and connects the newly created entities in the same way as the original.
 
-## Comparison with normal clone
-
-<video src="https://raw.githubusercontent.com/Four-Lights-NL/strapi-plugin-deepcopy/refs/heads/main/.github/strapi-deepcopy-vs-native-clone.webm" width="800" autoplay loop muted playsinline></video>
-
 ## Screenshot
 
-![image](https://raw.githubusercontent.com/Four-Lights-NL/strapi-plugin-deepcopy/refs/heads/main/.github/strapi-deepcopy.png)
+![strapi-deepcopy](https://github.com/user-attachments/assets/33c4f50c-2768-4260-a733-86a83e0e612d)
+
+## Comparison with normal clone
+
+[strapi-deepcopy-vs-native-clone.webm](https://github.com/user-attachments/assets/4a15fbba-547e-4693-9ce5-a895fdb83d7f)
 
 ## Usage
 
