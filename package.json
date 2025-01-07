@@ -25,14 +25,15 @@
     "watch": "strapi-plugin watch",
     "watch:link": "strapi-plugin watch:link",
     "verify": "strapi-plugin verify",
+    "test": "cross-env npm-run-all test:*",
     "test:ts:front": "run -T tsc -p admin/tsconfig.json",
     "test:ts:back": "run -T tsc -p server/tsconfig.json",
     "playground": "cd playgorund && $npm_pathexec run develop:admin",
     "prepublish": "cross-env npm-run-all build",
     "release": "release-it",
-    "lint": "cross-env npm-run-all lint:*",
-    "lint:admin": "eslint admin",
-    "lint:server": "eslint server"
+    "ci": "cross-env npm-run-all ci:*",
+    "ci:admin": "biome ci admin",
+    "ci:server": "biome ci server"
   },
   "dependencies": {
     "@strapi/design-system": "^2.0.0-rc.14",

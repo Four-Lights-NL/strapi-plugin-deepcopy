@@ -8,7 +8,6 @@ on:
         default: 'patch'
         type: choice
         options:
-          - pre
           - patch
           - minor
           - major
@@ -39,31 +38,16 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PAT_TOKEN }}
 
+      - name: Prepare
+        uses: ./.github/actions/prepare
+
       - name: Config Git
         run: |
           git config user.name "${GITHUB_ACTOR}"
           git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'pnpm'
-          cache-dependency-path: |
-            pnpm-lock.yaml
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
       - name: Run release
-        run: pnpm release --ci -i ${{ github.event.inputs.bump_type }} --preRelease ${{ github.event.inputs.prerelease_type }}
+        run: npm run release --ci -i ${{ github.event.inputs.bump_type }} --preRelease ${{ github.event.inputs.prerelease_type }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
