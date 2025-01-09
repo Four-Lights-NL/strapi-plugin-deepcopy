@@ -36,7 +36,7 @@
     "test:ts:back": "tsc -p server/tsconfig.json",
     "playground": "cd playground && $npm_execpath run develop:admin",
     "prepublish": "cross-env npm-run-all build",
-    "release": "release-it",
+    "release": "release-it --",
     "ci": "cross-env npm-run-all ci:*",
     "ci:admin": "biome ci admin",
     "ci:server": "biome ci server"
