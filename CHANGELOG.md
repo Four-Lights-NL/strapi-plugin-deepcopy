@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v2.0.0...v2.0.1) (2025-01-09)
+
+### Bug Fixes
+
+* use `fragments API` for populating `dynamic zone` types ([f4f0a5d](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/f4f0a5d8f520bff63c16d859931ca210fe676032))
+* use explicit release-it command for prerelease ([819ef7d](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/commit/819ef7daa62882e8106d5acf178b631c845eb6c1))
+
 ## [2.0.0](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v1.0.3...v2.0.0) (2025-01-07)
 
 ### Features
