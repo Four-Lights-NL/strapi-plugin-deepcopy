@@ -1,6 +1,8 @@
 {
   "extends": "./tsconfig",
   "compilerOptions": {
-    "outDir": "./dist"
-  }
+    "outDir": "./dist",
+    "noEmit": false
+  },
+  "exclude": ["**/*.(test|spec).{ts,tsx}"]
 }

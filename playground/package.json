@@ -11,21 +11,23 @@
     "strapi": "strapi"
   },
   "dependencies": {
-    "@fourlights/strapi-plugin-deep-copy": "../",
+    "@fourlights/strapi-plugin-deep-copy": "file:.yalc/@fourlights/strapi-plugin-deep-copy",
     "@strapi/plugin-users-permissions": "5.6.0",
     "@strapi/strapi": "5.6.0",
     "better-sqlite3": "11.5.0",
     "nypm": "^0.4.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.1",
-    "styled-components": "^6.1.13"
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.0.0",
+    "styled-components": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5"
   },
   "strapi": {
     "uuid": "2b188734-afc6-4e65-8ea1-3a1b336b1cb6"
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "qs": "^6.13.1"
   }
 }

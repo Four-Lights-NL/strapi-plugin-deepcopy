@@ -4,6 +4,7 @@
   "compilerOptions": {
     "rootDir": "../",
     "baseUrl": ".",
+    "noEmit": true,
     "paths": {
       "#config": ["../common/config"]
     }
@@ -15,7 +16,5 @@
 
     "**/*",
     "**/*.json"
-  ],
-
-  "exclude": ["**/*.test.ts"]
+  ]
 }
