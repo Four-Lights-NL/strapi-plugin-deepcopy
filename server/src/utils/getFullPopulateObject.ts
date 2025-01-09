@@ -101,7 +101,11 @@ export function getFullPopulateObject(
           debug,
           fullFieldName,
         )
-        return curPopulate === true ? prev : deepAssign(prev, curPopulate)
+
+        const curOn = {}
+        curOn[cur] = curPopulate
+
+        return curPopulate === true ? prev : deepAssign(prev, { on: curOn })
       }, {})
 
       populate[attrName] = D.isEmpty(dynamicPopulate) ? true : dynamicPopulate
