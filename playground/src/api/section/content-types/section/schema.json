@@ -34,6 +34,13 @@
       "type": "component",
       "repeatable": false,
       "component": "cms.special"
+    },
+    "blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "cms.special",
+        "cms.cool-component"
+      ]
     }
   }
 }
