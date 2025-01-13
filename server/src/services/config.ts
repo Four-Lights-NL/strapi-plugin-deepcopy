@@ -103,7 +103,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
   async getInitialValues({ contentType, documentId }: { contentType: UID.ContentType; documentId: string }) {
     const contentTypes = await strapi.plugin("deep-copy").service("config").getContentTypes()
-    const populate = populateObject(contentType)
+    const populate = await populateObject(contentType, documentId)
     const entity = await strapi.documents(contentType).findOne({
       documentId,
       populate,
@@ -132,7 +132,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     data: Record<string, string>
   }) {
     const contentTypes = await strapi.plugin("deep-copy").service("config").getContentTypes()
-    const populate = populateObject(contentType)
+    const populate = await populateObject(contentType, documentId)
     const entity = await strapi.documents(contentType).findOne({
       documentId,
       populate,
@@ -149,7 +149,7 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     documentId,
     ...uniqueFields
   }: { contentType: UID.ContentType; documentId: string; uniqueFields: Record<string, string> }) {
-    const populate = populateObject(contentType)
+    const populate = await populateObject(contentType, documentId)
     const sourceEntity = await strapi.documents(contentType).findOne({
       documentId,
       populate,

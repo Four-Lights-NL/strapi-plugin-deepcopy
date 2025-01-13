@@ -1,9 +1,15 @@
-import type { UID } from "@strapi/strapi"
+import type { Data, UID } from "@strapi/strapi"
 import { getFullPopulateObject } from "./getFullPopulateObject"
 
-export default function populateObject<TContentType extends UID.Schema>(contentType: TContentType) {
-  // FIXME: Recursion should be on-demand
-  const fullPopulateObject = getFullPopulateObject(contentType, 5, true)
+export default async function populateObject<TContentType extends UID.ContentType>(
+  contentType: TContentType,
+  documentId: string,
+) {
+  const document = (await strapi
+    .documents(contentType)
+    .findOne({ documentId, populate: "*" })) as unknown as Data.Entity<TContentType>
+  const fullPopulateObject = await getFullPopulateObject(contentType, document, true)
+
   if (fullPopulateObject === true) return {}
   return fullPopulateObject.populate
 }

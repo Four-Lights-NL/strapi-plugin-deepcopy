@@ -56,7 +56,6 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
           // FIXME: Create as draft, then update in batch to published status if requested
           status: publish ? "published" : "draft",
         })
-        console.log(data)
         idMap[placeholder] = entity.documentId
         if (entity) {
           strapi.log.info(`Created ${rowContentType} ${placeholder}`)
