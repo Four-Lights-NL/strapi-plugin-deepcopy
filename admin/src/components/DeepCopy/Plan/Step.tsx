@@ -31,7 +31,7 @@ type DeepCopyStepProps = {
 }
 const DeepCopyStep = ({ contentTypes, mutations, step, action = "copy" }: DeepCopyStepProps) => {
   const relations = Object.entries(step.model.__schema__.attributes)
-    .filter(([, attr]) => attr.type === "relation")
+    .filter(([name, attr]) => attr.type === "relation" && !!step.data[name])
     .map(([name, attr]) => [name, attr as Schema.Attribute.RelationWithTarget] as const)
   const nonRelations = Object.entries(step.model.__schema__.attributes).filter(([, attr]) => attr.type !== "relation")
 
@@ -55,6 +55,8 @@ const DeepCopyStep = ({ contentTypes, mutations, step, action = "copy" }: DeepCo
             {relations.map(([name, attr]) => {
               const { target } = attr
 
+              console.log(name, step.data)
+              console.log(step.data[name])
               const copy = "connect" in step.data[name]
               const data = copy ? step.data[name].connect : []
 
