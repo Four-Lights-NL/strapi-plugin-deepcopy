@@ -1,5 +1,5 @@
 import { D } from "@mobily/ts-belt"
-import type { UID } from "@strapi/strapi"
+import type { Data, UID } from "@strapi/strapi"
 import type { Attribute } from "@strapi/types/dist/schema"
 import { getModelPopulationAttributes } from "./getModelPopulationAttributes"
 
@@ -21,20 +21,18 @@ function deepAssign(target, source) {
   return target
 }
 
-export function getFullPopulateObject(
-  modelUid: UID.Schema,
-  maxDepth: number,
+const userApis = ["admin::user", "plugin::users-permissions.user"] as UID.Schema[]
+
+export async function getFullPopulateObject<T extends UID.Schema>(
+  modelUid: T,
+  document: Data.Entity<T>,
   skipCreatorFields: boolean,
   ignoreFields = new Set(),
   ignorePaths = new Set(),
   debug = false,
   parentPath = "",
 ) {
-  if (maxDepth <= 1) {
-    // debug && console.log('maxDepth reached, skipping')
-    return true
-  }
-  if (modelUid === "admin::user" && skipCreatorFields) {
+  if (userApis.includes(modelUid) && skipCreatorFields) {
     return undefined
   }
 
@@ -56,8 +54,6 @@ export function getFullPopulateObject(
   for (const [attrName, attrObject] of attributes) {
     const fullFieldName = parentPath ? `${parentPath}.${attrName}` : attrName
 
-    // console.log('attrName:', attrName, ' :', model.collectionName + '.' + attrName)
-
     // Check if the field is ignored (using attrName)
     if (ignoreFields.has(attrName) || ignoreFields.has(`${model.collectionName}.${attrName}`)) {
       debug && console.log(`Ignoring field: ${model.collectionName}.${attrName}`)
@@ -71,7 +67,13 @@ export function getFullPopulateObject(
     }
 
     if (debug) {
-      const skipLog = ["admin::user", "admin::role", "admin::permission", "plugin::upload.file"]
+      const skipLog = [
+        "admin::user",
+        "admin::role",
+        "admin::permission",
+        "plugin::upload.file",
+        "plugin::user-permissions.user",
+      ]
       if (!attrObject || !skipLog.includes((attrObject as AttributeWithTarget).target)) {
         console.log("attrObject", attrName, attrObject)
       }
@@ -83,7 +85,7 @@ export function getFullPopulateObject(
     if (attrObject.type === "component") {
       populate[attrName] = getFullPopulateObject(
         attrObject.component,
-        maxDepth - 1,
+        document[attrName] as Data.Component,
         skipCreatorFields,
         ignoreFields,
         ignorePaths,
@@ -91,10 +93,13 @@ export function getFullPopulateObject(
         fullFieldName,
       )
     } else if (attrObject.type === "dynamiczone") {
-      const dynamicPopulate = attrObject.components.reduce((prev, cur) => {
-        const curPopulate = getFullPopulateObject(
+      const components = (document[attrName] as Data.Component[]).map((dataComponent) =>
+        attrObject.components.find((schemaComponent) => schemaComponent === dataComponent.__component),
+      )
+      const dynamicPopulate = components.reduce(async (prev, cur, idx) => {
+        const curPopulate = await getFullPopulateObject(
           cur,
-          maxDepth - 1,
+          document[attrName][idx] as Data.Component,
           skipCreatorFields,
           ignoreFields,
           ignorePaths,
@@ -110,21 +115,43 @@ export function getFullPopulateObject(
 
       populate[attrName] = D.isEmpty(dynamicPopulate) ? true : dynamicPopulate
     } else if (attrObject.type === "relation") {
-      if ((attrObject as AttributeWithTarget).target === "admin::user" && skipCreatorFields) {
+      if (userApis.includes((attrObject as AttributeWithTarget).target) && skipCreatorFields) {
         continue
       }
-      const relationPopulate = getFullPopulateObject(
-        (attrObject as AttributeWithTarget).target,
-        maxDepth - 1,
-        skipCreatorFields,
-        ignoreFields,
-        ignorePaths,
-        debug,
-        fullFieldName,
-      )
-      if (relationPopulate === true || !D.isEmpty(relationPopulate)) {
-        populate[attrName] = relationPopulate
+
+      const isSingleRelation = !Array.isArray(document[attrName])
+      const relations = (isSingleRelation ? [document[attrName]] : document[attrName]) as Data.Entity[]
+
+      if (relations.length === 0) continue
+
+      const relationContentType = (attrObject as AttributeWithTarget).target as UID.ContentType
+      let combinedPopulate = undefined
+      for (const relation of relations) {
+        const relationDocument = await strapi
+          .documents(relationContentType)
+          .findOne({ documentId: relation.documentId, populate: "*" })
+        const relationPopulate = await getFullPopulateObject(
+          (attrObject as AttributeWithTarget).target,
+          relationDocument,
+          skipCreatorFields,
+          ignoreFields,
+          ignorePaths,
+          debug,
+          fullFieldName,
+        )
+        if (relationPopulate === true || (typeof relationPopulate === "object" && !D.isEmpty(relationPopulate))) {
+          if (
+            combinedPopulate === undefined ||
+            (combinedPopulate === true && typeof relationPopulate === "object" && !D.isEmpty(relationPopulate))
+          )
+            combinedPopulate = relationPopulate
+          else {
+            deepAssign(combinedPopulate, relationPopulate)
+          }
+        }
       }
+
+      populate[attrName] = combinedPopulate
     } else if (attrObject.type === "media") {
       populate[attrName] = true
     }
