@@ -42,3 +42,18 @@ cypress/screenshots
 
 # jetbrains stuff
 .idea
+
+# yalc
+.yalc
+
+# tmp
+.tmp
+
+# strapi
+.strapi
+.strapi*
+
+# playground
+playground/types
+playground/*lock.json
+playground/*.lock

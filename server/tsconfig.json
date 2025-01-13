@@ -2,8 +2,8 @@
   "extends": "@strapi/typescript-utils/tsconfigs/server",
 
   "compilerOptions": {
-    "outDir": "../dist",
     "rootDir": "../",
+    "noEmit": true,
 
     "paths": {
       "strapi-plugin-deepcopy/config": ["../common/config"],
@@ -12,16 +12,5 @@
     }
   },
 
-  "include": [
-    "../common/**/*",
-
-    "**/*",
-    // Force the JSON files in the src folder to be included
-    "**/*.json"
-  ],
-
-  "exclude": [
-    // Do not include test files
-    "**/*.test.ts"
-  ]
+  "include": ["../common/**/*", "**/*"]
 }
