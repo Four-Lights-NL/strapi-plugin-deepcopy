@@ -1,11 +1,10 @@
 # Changelog
 
-* Merge pull request #86 from Four-Lights-NL/feat/generate-plan-from-filled-in-attributes (6c71909)
-* feat: allow unlimited recursion by traversing nested entities directly (d73945b)
-* Merge pull request #85 from Four-Lights-NL/chore/improve-test-setup (988d5c8)
-* chore: setup jest unit and integration tests (083e4f3)
-* Merge pull request #84 from Four-Lights-NL/chore/fix-prerelease (3aa0b16)
-* chore: fix passing of arguments to npm (753d25f)
+## [2.1.0](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v2.0.1...v2.1.0) (2025-01-13)
+
+### Features
+
+* allow unlimited recursion by traversing nested entities directly ([d73945b](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/pull/86/commits/d73945b8add6fa17ca9f2fa832c09389914a5d4d))
 
 ## [2.0.1](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/compare/v2.0.0...v2.0.1) (2025-01-09)
 
