@@ -1,14 +1,46 @@
-# Strapi plugin deep-copy
+# @fourlights/strapi-plugin-deepcopy
 
-## Compatibility
-
-- **Strapi v5** use v2.0 or later
-- **Strapi v4** use v1.0.3 or earlier
+A strapi plugin providing deep copy functionality for nested entities.
 
 The default behaviour in Strapi is to create a shallow copy when duplicating an entity.
 This means that any relations are lost and have to be duplicated separately and connected manually to the newly created entities.
 
 This plugin provides a custom `copy` action when viewing an entity in the Strapi admin which clones the entity and all it's related models, and connects the newly created entities in the same way as the original.
+
+---
+## Table of Contents
+
+* [Installation](#installation)
+* [Usage](#usage)
+* [Compatability](#compatibility)
+* [Screenshot](#screenshot)
+* [Advanced Usage](#advanced-usage)
+* [Development](#development)
+
+---
+
+## Installation
+
+```bash
+npm install @fourlights/strapi-plugin-deep-copy @fourlights/strapi-plugin-deep-populate
+```
+<sub>Note: This plugin needs `@fourlights/strapi-plugin-deep-populate` to function.</sub>
+
+Then configure enabled the plugins in `config/plugins.ts`
+
+```json5
+{
+  'deep-populate': { enabled: true },
+  'deep-copy': { enabled: true, config: { /* see usage section */ } }
+}
+```
+
+## Compatibility
+
+- **Strapi v5** use [v2.0 or later](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/releases)
+- **Strapi v4** use [v1.0.3](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/releases/tag/v1.0.3) - [Source](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/tree/v1.0.3) - [Read Me](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/blob/v1.0.3/README.md)
+
+
 
 ## Screenshot
 
@@ -18,23 +50,18 @@ This plugin provides a custom `copy` action when viewing an entity in the Strapi
 
 [strapi-deepcopy-vs-native-clone.webm](https://github.com/user-attachments/assets/4a15fbba-547e-4693-9ce5-a895fdb83d7f)
 
+
 ## Usage
 
-Install using your favourite package manager
-
-```bash
-pnpm install @fourlights/strapi-plugin-deep-copy
-```
-
-Then in `config/plugins.js` add the contentTypes for which you want to enable creating a deep copy.
+After [installation](#installation), add the contentTypes for which you want to enable creating a deep copy.
 Any content-types not listed here will not be copied. Relations to these content types will be the same as on the original entity.
-
 
 Take a look at the following config:
 
 ```json5
 {
   // ...
+  'deep-populate': { enabled: true },
   'deep-copy': {
     enabled: true,
     config: {
@@ -138,19 +165,19 @@ This follows a similar approach to the `uniquefields`, but with some extra funct
 
 You can use the `playground` directory for a strapi instance which is configured to use the plugin.
 
-Automatic compilation of server part
+In one terminal
 ```bash
-pnpm run develop:server
+npm run watch:link
 ```
 
-Automatic compilation of admin part
+Make sure the playground has the proper yalc configuration
 ```bash
-pnpm run develop:admin
+npm run playground:install
 ```
 
-Start strapi server
+Run playground
 ```bash
-pnpm run playground
+npm run playground
 ```
 
 Login to the admin with
