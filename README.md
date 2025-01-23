@@ -12,7 +12,7 @@ This plugin provides a custom `copy` action when viewing an entity in the Strapi
 
 * [Installation](#installation)
 * [Usage](#usage)
-* [Compatability](#compatibility)
+* [Compatibility](#compatibility)
 * [Screenshot](#screenshot)
 * [Advanced Usage](#advanced-usage)
 * [Development](#development)
