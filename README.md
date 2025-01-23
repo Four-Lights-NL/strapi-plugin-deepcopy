@@ -1,4 +1,4 @@
-# @fourlights/strapi-plugin-deepcopy
+# @fourlights/strapi-plugin-deep-copy
 
 A strapi plugin providing deep copy functionality for nested entities.
 
@@ -12,7 +12,7 @@ This plugin provides a custom `copy` action when viewing an entity in the Strapi
 
 * [Installation](#installation)
 * [Usage](#usage)
-* [Compatability](#compatibility)
+* [Compatibility](#compatibility)
 * [Screenshot](#screenshot)
 * [Advanced Usage](#advanced-usage)
 * [Development](#development)
@@ -37,18 +37,18 @@ Then configure enabled the plugins in `config/plugins.ts`
 
 ## Compatibility
 
-- **Strapi v5** use [v2.0 or later](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/releases)
-- **Strapi v4** use [v1.0.3](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/releases/tag/v1.0.3) - [Source](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/tree/v1.0.3) - [Read Me](https://github.com/Four-Lights-NL/strapi-plugin-deepcopy/blob/v1.0.3/README.md)
+- **Strapi v5** use [v2.0 or later](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/releases)
+- **Strapi v4** use [v1.0.3](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/releases/tag/v1.0.3) - [Source](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/tree/v1.0.3) - [Read Me](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/blob/v1.0.3/README.md)
 
 
 
 ## Screenshot
 
-![strapi-deepcopy](https://github.com/user-attachments/assets/33c4f50c-2768-4260-a733-86a83e0e612d)
+![strapi-deep-copy](https://github.com/user-attachments/assets/33c4f50c-2768-4260-a733-86a83e0e612d)
 
 ## Comparison with normal clone
 
-[strapi-deepcopy-vs-native-clone.webm](https://github.com/user-attachments/assets/4a15fbba-547e-4693-9ce5-a895fdb83d7f)
+[strapi-deep-copy-vs-native-clone.webm](https://github.com/user-attachments/assets/4a15fbba-547e-4693-9ce5-a895fdb83d7f)
 
 
 ## Usage
