@@ -1,5 +1,6 @@
 import type { Data, UID } from "@strapi/strapi"
 import type { Schema } from "@strapi/types"
+import { klona } from "klona/json"
 import type { ContentTypeConfig, UniqueFields } from "strapi-plugin-deepcopy/config"
 
 const prepareForCopy = async (
@@ -13,7 +14,7 @@ const prepareForCopy = async (
   const config = contentTypes[contentType]
 
   // Create a copy of data that we can modify
-  const newData: object | object[] = Array.isArray(data) ? [...data] : { ...data }
+  const newData: object | object[] = Array.isArray(data) ? [...data] : klona(data)
 
   const emptyFields = {
     id: undefined,
@@ -30,7 +31,7 @@ const prepareForCopy = async (
   }> = []
 
   // Get model for this contentType
-  const model = { ...strapi.getModel(contentType) } // NOTE: Explicit copy, so get the correct model on every iteration
+  const model = klona(strapi.getModel(contentType)) // NOTE: Explicit copy, so get the correct model on every iteration
 
   // Set all unique properties to their values
   if (config) {
@@ -60,10 +61,13 @@ const prepareForCopy = async (
 
     for (let i = 0; i < nonCopyFields.length; i += 1) {
       const [name, attr] = nonCopyFields[i]
+
+      // NOTE: Strapi seems to have trouble with the documentId in some instances
+      // so we use the `id` field instead. I expect this break at some point in the future.
       newData[name] =
         attr.type === "relation" && attr.relation === "oneToMany"
-          ? newData[name].map((s: Data.Entity) => s.documentId)
-          : newData[name].documentId
+          ? [newData[name].map((s: Data.Entity) => s.id)]
+          : newData[name].id
     }
   }
 
@@ -145,6 +149,7 @@ const prepareForCopy = async (
           }),
       )
     ).flat(1)
+
     prepared = prepared.concat(...oneToOne)
   }
 
@@ -173,6 +178,7 @@ const prepareForCopy = async (
           }),
       )
     ).flat(1)
+
     prepared = prepared.concat(...oneToMany)
   }
 

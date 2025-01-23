@@ -1,6 +1,5 @@
 import type { Config, ContentTypeConfig } from "strapi-plugin-deepcopy/config"
-
-import { uniqueCopyName } from "../utils"
+import uniqueCopyName from "../utils/uniqueCopyName"
 
 export default {
   default: {

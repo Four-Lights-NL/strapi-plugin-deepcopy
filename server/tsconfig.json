@@ -6,9 +6,7 @@
     "noEmit": true,
 
     "paths": {
-      "strapi-plugin-deepcopy/config": ["../common/config"],
-      "strapi-plugin-deepcopy/server": ["./src"],
-      "strapi-plugin-deepcopy/server/*": ["./src/*"]
+      "strapi-plugin-deepcopy/config": ["../common/config"]
     }
   },
 

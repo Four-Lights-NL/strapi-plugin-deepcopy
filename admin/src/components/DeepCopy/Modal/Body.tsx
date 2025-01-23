@@ -123,7 +123,6 @@ const DeepCopyModalBody = ({ documentId, model, variant = "action" }: DeepCopyMo
                   <Box>
                     <Typography variant="omega" fontWeight="semiBold">
                       {error.name}
-                      {error.path ? `- '${error.path}'` : null}
                     </Typography>
                   </Box>
                   <Box>
