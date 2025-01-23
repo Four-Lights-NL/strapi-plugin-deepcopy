@@ -1,6 +1,7 @@
 import type { Core, Schema, UID } from "@strapi/strapi"
 import slugify from "slugify"
 
+import { klona } from "klona/json"
 import type {
   ContentTypeConfig,
   EditableFields,
@@ -8,8 +9,8 @@ import type {
   UniqueFieldConfig,
   UniqueFields,
 } from "strapi-plugin-deepcopy/config"
-
-import { populateObject, prepareForCopy, uniqueCopyName } from "../utils"
+import prepareForCopy from "../utils/prepareForCopy"
+import uniqueCopyName from "../utils/uniqueCopyName"
 
 const getUniqueFields = <T extends string | number | boolean>(
   model: Schema.ContentType,
@@ -103,13 +104,13 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
 
   async getInitialValues({ contentType, documentId }: { contentType: UID.ContentType; documentId: string }) {
     const contentTypes = await strapi.plugin("deep-copy").service("config").getContentTypes()
-    const populate = await populateObject(contentType, documentId)
-    const entity = await strapi.documents(contentType).findOne({
-      documentId,
-      populate,
-    })
+    const entity = await strapi
+      .plugin("deep-populate")
+      .service("populate")
+      .documents(contentType)
+      .findOne({ documentId })
 
-    const currentData = { ...entity }
+    const currentData = klona(entity)
 
     const { editableFields } = contentTypes[contentType]
     return Object.fromEntries(
@@ -132,11 +133,11 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     data: Record<string, string>
   }) {
     const contentTypes = await strapi.plugin("deep-copy").service("config").getContentTypes()
-    const populate = await populateObject(contentType, documentId)
-    const entity = await strapi.documents(contentType).findOne({
-      documentId,
-      populate,
-    })
+    const entity = await strapi
+      .plugin("deep-populate")
+      .service("populate")
+      .documents(contentType)
+      .findOne({ documentId })
 
     const currentData = { ...entity, ...data }
 
@@ -149,11 +150,11 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
     documentId,
     ...uniqueFields
   }: { contentType: UID.ContentType; documentId: string; uniqueFields: Record<string, string> }) {
-    const populate = await populateObject(contentType, documentId)
-    const sourceEntity = await strapi.documents(contentType).findOne({
-      documentId,
-      populate,
-    })
+    const sourceEntity = await strapi
+      .plugin("deep-populate")
+      .service("populate")
+      .documents(contentType)
+      .findOne({ documentId })
     const targetEntity = { ...sourceEntity, ...uniqueFields }
     const contentTypes = await strapi.plugin("deep-copy").service("config").getContentTypes()
     const mutations = await prepareForCopy(

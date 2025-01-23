@@ -1,8 +1,10 @@
 import type { Core, Data, Schema, UID } from "@strapi/strapi"
+import * as utils from "@strapi/utils"
 
 import type { ContentTypeConfig } from "strapi-plugin-deepcopy/config"
-import isContentTypeSchema from "../utils/isContentTypeSchema"
 import type prepareForCopy from "../utils/prepareForCopy"
+
+type UnwrapPromise<T> = T extends Promise<infer U> ? U : T
 
 export default ({ strapi }: { strapi: Core.Strapi }) => ({
   async copy({
@@ -45,11 +47,12 @@ export default ({ strapi }: { strapi: Core.Strapi }) => ({
             return true
           })
 
-        if (!isContentTypeSchema(model)) {
+        if (!utils.contentTypes.isContentTypeSchema(model)) {
           strapi.log.debug(`Skipping component ${rowContentType} ${placeholder}`)
         }
 
         strapi.log.debug(`Creating ${rowContentType} ${placeholder}`)
+        console.log("Got data", JSON.stringify(data, null, 2))
         // eslint-disable-next-line no-await-in-loop
         const entity = await strapi.documents(rowContentType as UID.ContentType).create({
           data,

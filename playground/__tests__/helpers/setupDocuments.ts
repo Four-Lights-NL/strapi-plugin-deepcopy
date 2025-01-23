@@ -18,14 +18,24 @@ const setupDocuments = async () => {
       name: "Primary Section",
       content: "This is a primary section",
       coolitems: [
-        { title: "beer", isCool: true, text: "Cool and refreshing" },
-        { title: "water", isCool: true, text: "It's what plants crave" },
+        { title: "beer", isCool: true, text: "Cool and refreshing", targets: [{ isSpecial: false, name: "a test" }] },
+        { title: "water", isCool: true, text: "It's what plants crave", targets: [] },
       ],
       blocks: [
         {
           __component: "cms.cool-component" as const,
           isCool: true,
           title: "dynamic and cool",
+          targets: [
+            {
+              isSpecial: false,
+              name: "a nested non-special component",
+            },
+            {
+              isSpecial: true,
+              name: "a nested and very special component",
+            },
+          ],
         },
         {
           __component: "cms.special" as const,
