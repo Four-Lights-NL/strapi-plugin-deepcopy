@@ -22,14 +22,14 @@ jobs:
       - name: Prepare
         uses: ./.github/actions/prepare
 
-      - name: Prepare playground
-        run: npx yalc publish && npm run playground:install
-
       - name: Build
         run: npm run build
 
       - name: Verify
         run: npm run verify
+
+      - name: Prepare playground
+        run: npx yalc publish && npm run playground:install
 
       - name: Tests
         run: npm run test
