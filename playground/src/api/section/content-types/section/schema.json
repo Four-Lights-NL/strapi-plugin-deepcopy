@@ -25,15 +25,20 @@
       "relation": "oneToMany",
       "target": "api::section.section"
     },
-    "coolitems": {
+    "multipleCoolComponents": {
       "type": "component",
       "repeatable": true,
       "component": "cms.cool-component"
     },
-    "target": {
+    "singleSpecialComponent": {
       "type": "component",
       "repeatable": false,
       "component": "cms.special"
+    },
+    "singleCoolComponent": {
+      "type": "component",
+      "repeatable": false,
+      "component": "cms.cool-component"
     },
     "blocks": {
       "type": "dynamiczone",

@@ -49,16 +49,23 @@ describe("config service", () => {
       // first to be created should be the nestedSection
       expect(ret.mutations[0].contentType).toEqual("api::section.section")
       expect(ret.mutations[0].data.name).toContain(nestedSection.input.name) // with a slightly modified name
-      expect(ret.mutations[0].data.coolitems).toEqual(
-        expect.arrayContaining(nestedSection.input.coolitems.map((coolItem) => expect.objectContaining(coolItem))),
+      expect(ret.mutations[0].data.multipleCoolComponents).toEqual(
+        expect.arrayContaining(
+          nestedSection.input.multipleCoolComponents.map((coolItem) => expect.objectContaining(coolItem)),
+        ),
       )
+      expect(ret.mutations[0].data.singleCoolComponent.targets).toStrictEqual([])
 
       // next the primarySection
       expect(ret.mutations[1].contentType).toEqual("api::section.section")
       expect(ret.mutations[1].data.name).toContain(primarySection.input.name) // with a slightly modified name
-      expect(ret.mutations[1].data.coolitems.map(stripExtraProps)).toEqual(
-        expect.arrayContaining(primarySection.input.coolitems),
+      expect(ret.mutations[1].data.multipleCoolComponents.map(stripExtraProps)).toEqual(
+        expect.arrayContaining(primarySection.input.multipleCoolComponents),
       )
+      expect(ret.mutations[1].data.singleCoolComponent.targets.map(stripExtraProps)).toEqual(
+        expect.arrayContaining(primarySection.input.singleCoolComponent.targets),
+      )
+
       expect(ret.mutations[1].data.blocks.map(stripExtraProps)).toEqual(
         expect.arrayContaining(primarySection.input.blocks),
       )

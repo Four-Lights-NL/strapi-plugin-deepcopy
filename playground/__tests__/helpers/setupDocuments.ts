@@ -5,7 +5,9 @@ const setupDocuments = async () => {
     input: {
       name: "Nested Section",
       content: "This is a nested section",
-      coolitems: [{ title: "a hot potato", isCool: false, text: "Full of carbs" }],
+      singleCoolComponent: { isCool: true },
+      singleSpecialComponent: { isSpecial: true },
+      multipleCoolComponents: [{ title: "a hot potato", isCool: false, text: "Full of carbs" }],
     },
     output: {} as Data.ContentType<"api::section.section">,
   }
@@ -17,7 +19,8 @@ const setupDocuments = async () => {
     input: {
       name: "Primary Section",
       content: "This is a primary section",
-      coolitems: [
+      singleCoolComponent: { isCool: false, targets: [{ isSpecial: false }] },
+      multipleCoolComponents: [
         { title: "beer", isCool: true, text: "Cool and refreshing", targets: [{ isSpecial: false, name: "a test" }] },
         { title: "water", isCool: true, text: "It's what plants crave", targets: [] },
       ],
