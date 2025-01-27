@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.3.0-rc.0](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/compare/v2.2.0-rc.0...v2.3.0-rc.0) (2025-01-27)
+
+### Bug Fixes
+
+* handle repeatable components correctly ([7041671](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/commit/7041671355e9a9d33e10cc359ad7437594a0e7c2))
+
 ## [2.2.0-rc.0](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/compare/v2.1.0...v2.2.0-rc.0) (2025-01-27)
 
 ### Bug Fixes
