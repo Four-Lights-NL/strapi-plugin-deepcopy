@@ -43,7 +43,7 @@
     "ci:server": "biome ci server"
   },
   "dependencies": {
-    "@fourlights/strapi-plugin-deep-populate": "^1.0.0-beta.0",
+    "@fourlights/strapi-plugin-deep-populate": "^1.0.0",
     "@strapi/design-system": "^2.0.0-rc.14",
     "@strapi/icons": "^2.0.0-rc.14",
     "dlv": "^1.1.3",
