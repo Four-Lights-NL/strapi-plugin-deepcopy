@@ -1,16 +1,4 @@
-import {
-  Accordion,
-  Badge,
-  Box,
-  Card,
-  CardBadge,
-  CardBody,
-  CardContent,
-  CardSubtitle,
-  CardTitle,
-  Flex,
-  Typography,
-} from "@strapi/design-system"
+import { Badge, Box, Card, CardBody, CardContent, CardTitle, Flex, Typography } from "@strapi/design-system"
 import type { Data, Schema, UID } from "@strapi/strapi"
 
 import { ChevronRight, Duplicate, Link } from "@strapi/icons"
@@ -55,8 +43,6 @@ const DeepCopyStep = ({ contentTypes, mutations, step, action = "copy" }: DeepCo
             {relations.map(([name, attr]) => {
               const { target } = attr
 
-              console.log(name, step.data)
-              console.log(step.data[name])
               const copy = "connect" in step.data[name]
               const data = copy ? step.data[name].connect : []
 
