@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.2.0-rc.1](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/compare/v2.1.0...v2.2.0-rc.0) (2025-01-27)
+
+### Bug Fixes
+
+* handle repeatable components correctly ([7041671](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/commit/7041671355e9a9d33e10cc359ad7437594a0e7c2))
+## [2.2.0-rc.0](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/compare/v2.1.0...v2.2.0-rc.0) (2025-01-27)
+
+### Bug Fixes
+
+* `Plan` component should check if a relation is actually set ([3db9124](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/commit/3db9124d76b8298706807518a18c090d599db2d1))
+* properly handle nested entities by using `@fourlights/strapi-plugin-deep-populate` ([a046454](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/commit/a0464545e357605e59c6c2a217e4d60197c1b231))
+
 ## [2.2.0-rc.1](https://github.com/Four-Lights-NL/strapi-plugin-deep-copy/compare/v2.2.0-rc.0...v2.2.0-rc.1) (2025-01-27)
 
 ### Bug Fixes
