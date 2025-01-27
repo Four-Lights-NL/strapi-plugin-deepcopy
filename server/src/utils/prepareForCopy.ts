@@ -106,15 +106,17 @@ const prepareForCopy = async (
           .map(async ([name, attr]: [string, Schema.Attribute.Component<UID.Component, boolean>]) => {
             if (attr.repeatable === true && newData[name]?.length === 0) return undefined
 
-            const ret = await prepareForCopy(
-              attr.component as UID.Component,
-              newData[name],
-              `${placeholder}.${name}`,
-              contentTypes,
+            const attrValue = attr.repeatable ? (newData[name] ?? []) : [newData[name]]
+            const ret = await Promise.all(
+              attrValue.map(async (value) =>
+                prepareForCopy(attr.component as UID.Component, value, `${placeholder}.${name}`, contentTypes),
+              ),
             )
 
-            newData[name] = ret[ret.length - 1]?.data ?? {} // actual component is always the last in the array
-            return ret.slice(0, -1) // all other items are forward declared placeholders that need to be created later on
+            const getComponent = (row) => row[row.length - 1]?.data ?? {} // actual component is always the last in the array
+            newData[name] = attr.repeatable ? ret.map(getComponent) : getComponent(ret[0])
+            const getForwardDeclared = (row) => row.slice(0, -1) // all other items are forward declared placeholders that need to be created later on
+            return attr.repeatable ? ret.map(getForwardDeclared) : getForwardDeclared(ret[0])
           }),
       )
     ).flat(1)

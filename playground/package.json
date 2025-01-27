@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@fourlights/strapi-plugin-deep-copy": "file:.yalc/@fourlights/strapi-plugin-deep-copy",
-    "@fourlights/strapi-plugin-deep-populate": "^1.0.0-beta.0",
+    "@fourlights/strapi-plugin-deep-populate": "^1.0.1",
     "@strapi/plugin-users-permissions": "5.8.0",
     "@strapi/strapi": "5.8.0",
     "better-sqlite3": "11.5.0",
