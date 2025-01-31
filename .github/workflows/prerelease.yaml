@@ -5,7 +5,6 @@ on:
       bump_type:
         description: 'Bump type'
         required: false
-        default: 'patch'
         type: choice
         options:
           - ''
