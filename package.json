@@ -1,9 +1,6 @@
 {
   "version": "2.2.1-rc.0",
-  "keywords": [
-    "strapi",
-    "plugin"
-  ],
+  "keywords": ["strapi", "plugin"],
   "type": "commonjs",
   "exports": {
     "./package.json": "./package.json",
@@ -22,10 +19,7 @@
       "default": "./dist/server/index.js"
     }
   },
-  "files": [
-    "dist",
-    "README.md"
-  ],
+  "files": ["dist", "README.md"],
   "scripts": {
     "build": "strapi-plugin build",
     "watch": "strapi-plugin watch",
@@ -49,7 +43,7 @@
     "ci:server": "biome ci server"
   },
   "dependencies": {
-    "@fourlights/strapi-plugin-deep-populate": "^1.1.0",
+    "@fourlights/strapi-plugin-deep-populate": "^1.1.1",
     "@strapi/design-system": "^2.0.0-rc.14",
     "@strapi/icons": "^2.0.0-rc.14",
     "dlv": "^1.1.3",
@@ -89,7 +83,7 @@
     "yalc": "^1.0.0-pre.53"
   },
   "peerDependencies": {
-    "@fourlights/strapi-plugin-deep-populate": "^1.1.0",
+    "@fourlights/strapi-plugin-deep-populate": "^1.1.1",
     "@strapi/admin": "^5.6.0",
     "@strapi/content-manager": "^5.6.0",
     "@strapi/design-system": "^2.0.0-rc.14",
@@ -110,9 +104,7 @@
   "description": "This plugin enables copying entities including their relations.",
   "license": "MIT",
   "author": "Four Lights <engineering@fourlights.nl> (https://github.com/Four-Lights-NL/strapi-plugin-deep-copy)",
-  "maintainers": [
-    "Thomas Rijpstra - Four Lights <thomas@fourlights.nl> (https://github.com/trijpstra-fourlights)"
-  ],
+  "maintainers": ["Thomas Rijpstra - Four Lights <thomas@fourlights.nl> (https://github.com/trijpstra-fourlights)"],
   "homepage": "https://github.com/Four-Lights-NL/strapi-plugin-deep-copy#readme",
   "repository": {
     "type": "git",
