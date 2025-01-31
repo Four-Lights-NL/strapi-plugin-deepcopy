@@ -1,6 +1,9 @@
 {
-  "version": "2.2.1-rc.0",
-  "keywords": ["strapi", "plugin"],
+  "version": "2.2.1-rc.1",
+  "keywords": [
+    "strapi",
+    "plugin"
+  ],
   "type": "commonjs",
   "exports": {
     "./package.json": "./package.json",
@@ -19,7 +22,10 @@
       "default": "./dist/server/index.js"
     }
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "strapi-plugin build",
     "watch": "strapi-plugin watch",
@@ -104,7 +110,9 @@
   "description": "This plugin enables copying entities including their relations.",
   "license": "MIT",
   "author": "Four Lights <engineering@fourlights.nl> (https://github.com/Four-Lights-NL/strapi-plugin-deep-copy)",
-  "maintainers": ["Thomas Rijpstra - Four Lights <thomas@fourlights.nl> (https://github.com/trijpstra-fourlights)"],
+  "maintainers": [
+    "Thomas Rijpstra - Four Lights <thomas@fourlights.nl> (https://github.com/trijpstra-fourlights)"
+  ],
   "homepage": "https://github.com/Four-Lights-NL/strapi-plugin-deep-copy#readme",
   "repository": {
     "type": "git",
